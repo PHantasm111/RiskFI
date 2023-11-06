@@ -32,10 +32,112 @@ public class RiskGame {
 	 * lance la premiere fenetre
 	 */
 	public static void main(String[] args) {
-		mainMenuGUI();
+		avantMainGUI();
 	}
-	
-/**
+
+	private static void avantMainGUI(){
+		String[] optionsToChoose = { "Consultation", "Création", "Jouer" };
+
+
+		int choice = JOptionPane.showOptionDialog(null, "Choisir une action : ", "Risk e-sport [MENU]",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Consultation")) {
+				// Consulter les infos
+				consultationGUI();
+
+			} else if (selectedOption.equals("Création")) {
+				// Création des competitions et des joueurs
+
+			} else if (selectedOption.equals("Jouer")) {
+				mainMenuGUI();
+			}
+		}
+	}
+
+	private static void consultationGUI() {
+		String[] optionsToChoose = { "Joueur", "Compétition", "Tournois", "Manche"};
+
+		int choice = JOptionPane.showOptionDialog(null,
+				"Choisir une partie pour consulter.",
+				"Risk-Consultation",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				optionsToChoose,
+				optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Joueur")) {
+				// afficher tous les infos de joueur
+				afInfoJoueur();
+
+			} else if (selectedOption.equals("Compétition")) {
+				// TODO: afficher tous les infos de Compétition
+//				afInfoCompétition();
+
+			} else if (selectedOption.equals("Tournois")) {
+				// TODO: afficher tous les infos de Tournois
+//				afInfoTournois();
+
+			} else if (selectedOption.equals("Manche")){
+				// TODO: afficher tous les infos de Manche
+//				afInfoManche();
+			}
+		}
+
+	}
+
+	/**
+	 * Retrieves information about players from the database and processes the data.
+	 * This method queries the database for player information and processes the results.
+	 * The retrieved information includes player details, tournament, competition, round, team,
+	 * and participation data.
+	 *
+	 * @throws Exception if there is an error while retrieving or processing the data.
+	 */
+	private static void afInfoJoueur() {
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
+
+			// Execute query et récupérer les infos de joueur
+			String query = """
+					SELECT * 
+					FROM joueur, tournoi, competition, manche, inscrire, equipe
+					WHERE manche.numeroTournoi = tournoi.numeroTournoi
+					AND tournoi.numeroCompetition = competition.numeroCompetition
+					AND joueur.numeroJoueur = inscrire.numeroJoueur
+					AND inscrire.numeroManche = manche.numeroManche
+					AND joueur.numeroEquipe = inscrire.numeroEquipe
+					""";
+			ResultSet resultat = stmt.executeQuery(query);
+
+			while(resultat.next()) {
+
+
+			}
+			con.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	/**
  * propose de lancer une partie, ou autre
  */
 	private static void mainMenuGUI() {
