@@ -52,8 +52,7 @@ public class RiskGame {
 		consulterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// to do - fonction after click button conculter
-
+				afficherConsultationOptions();
 			}
 		});
 
@@ -142,6 +141,62 @@ public class RiskGame {
 		creationFrame.setVisible(true);
 	}
 
+	private static void afficherConsultationOptions() {
+		JFrame consultationFrame = new JFrame("Options de Consultation");
+		consultationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ferme cette fenêtre sans影响主窗口
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JButton joueurButton = new JButton("Joueur");
+		JButton competitionButton = new JButton("Compétition");
+		JButton tournoisButton = new JButton("Tournois");
+		JButton mancheButton = new JButton("Manche");
+
+		joueurButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Joueur".
+				// Vous pouvez添加自己的逻辑在这里。
+			}
+		});
+
+		competitionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Compétition".
+			}
+		});
+
+		tournoisButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Tournois".
+			}
+		});
+
+		mancheButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Manche".
+			}
+		});
+
+		panel.add(Box.createVerticalStrut(20)); // 添加20像素的垂直间隙
+		panel.add(joueurButton);
+		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(competitionButton);
+		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(tournoisButton);
+		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(mancheButton);
+		panel.add(Box.createVerticalStrut(20)); // 添加20像素的垂直间隙
+
+		consultationFrame.add(panel);
+		consultationFrame.pack();
+		consultationFrame.setLocationRelativeTo(null); // 将新窗口居中显示
+		consultationFrame.setVisible(true);
+	}
 
 	/**
 	 * permet de choisir une competition
