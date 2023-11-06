@@ -1,5 +1,8 @@
 package riskGame;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,9 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -39,18 +40,65 @@ public class RiskGame {
  * propose de lancer une partie, ou autre
  */
 	private static void mainMenuGUI() {
-		//options proposees
-		String[] optionsToChoose = { "Lancer une partie", "Consulter trophées" };
-		//question affichee
-		String choice = (String) JOptionPane.showInputDialog(null, "Que voulez vous faire ? ", "Risk e-sport [MENU]",
-				JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
-		if (choice == null) {
-			System.out.println("Quitting app...");
-		} else if (choice == "Lancer une partie") {
-			choixCompetitionGUI();
-		} else if(choice == "Consulter trophées") {
-			afficherTrophees();
-		}
+		JFrame frame = new JFrame("Risk e-sport [MENU]");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// disposition verticale
+		frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+
+		JButton consulterButton = new JButton("Consultation");
+		JButton creationButton = new JButton("Création");
+		JButton jouerButton = new JButton("Commencer le jeu");
+
+		consulterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// to do - fonction after click button conculter
+
+			}
+		});
+
+		creationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 	to do - fonction after click button creation
+
+			}
+		});
+
+		jouerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				//options proposees
+				String[] optionsToChoose = { "Lancer une partie", "Consulter trophées" };
+				//question affichee
+				String choice = (String) JOptionPane.showInputDialog(null, "Que voulez vous faire ? ", "Risk e-sport [MENU]",
+						JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
+				if (choice == null) {
+					System.out.println("Quitting app...");
+				} else if (choice == "Lancer une partie") {
+					choixCompetitionGUI();
+				} else if(choice == "Consulter trophées") {
+					afficherTrophees();
+				}
+
+			}
+		});
+
+
+		frame.add(Box.createVerticalStrut(20));
+		frame.add(consulterButton);
+		frame.add(Box.createVerticalStrut(10));
+		frame.add(creationButton);
+		frame.add(Box.createVerticalStrut(10));
+		frame.add(jouerButton);
+		frame.add(Box.createVerticalStrut(20));
+
+
+		frame.setLocationRelativeTo(null);
+		frame.pack();
+		frame.setVisible(true);
+
 	}
 
 	/**
@@ -507,3 +555,4 @@ public class RiskGame {
 	}
 
 }
+
