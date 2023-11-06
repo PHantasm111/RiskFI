@@ -54,6 +54,7 @@ public class RiskGame {
 
 			} else if (selectedOption.equals("Création")) {
 				// Création des competitions et des joueurs
+				creationGUI();
 
 			} else if (selectedOption.equals("Jouer")) {
 				mainMenuGUI();
@@ -105,6 +106,7 @@ public class RiskGame {
 		}
 
 	}
+
 
 	/**
 	 * Retrieves information about players from the database and processes the data.
@@ -174,6 +176,32 @@ public class RiskGame {
 			e.printStackTrace();
 		}
 
+	}
+
+	private static void creationGUI(){
+		String[] optionsToChoose = { "Création de Joueur", "Création de compétition"};
+
+		int choice = JOptionPane.showOptionDialog(null,
+				"Choisir une partie pour Création.",
+				"Risk-Création",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				optionsToChoose,
+				optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Création de Joueur")) {
+				// TODO
+
+			} else if (selectedOption.equals("Création de compétition")) {
+				// TODO
+
+			}
+		}
 	}
 
 	/**
