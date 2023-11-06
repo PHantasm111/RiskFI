@@ -106,7 +106,7 @@ public class RiskGame {
 	 */
 	private static void afficherCreationOptions() {
 		JFrame creationFrame = new JFrame("Options de Création");
-		creationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 关闭该窗口时不影响主窗口
+		creationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // La fermeture de cette fenêtre n'affecte pas la fenêtre principale
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -137,13 +137,18 @@ public class RiskGame {
 
 		creationFrame.add(panel);
 		creationFrame.pack();
-		creationFrame.setLocationRelativeTo(null); // 让新窗口居中显示
+		creationFrame.setLocationRelativeTo(null); // Centrer la nouvelle fenêtre
 		creationFrame.setVisible(true);
 	}
 
+	/**
+	 * Affiche une fenêtre modale contenant des options de consultation, telles que "Joueur",
+	 * "Compétition", "Tournois" et "Manche". Chaque option est représentée par un bouton
+	 * permettant d'exécuter une action associée à cette option.
+	 */
 	private static void afficherConsultationOptions() {
 		JFrame consultationFrame = new JFrame("Options de Consultation");
-		consultationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ferme cette fenêtre sans影响主窗口
+		consultationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -181,19 +186,19 @@ public class RiskGame {
 			}
 		});
 
-		panel.add(Box.createVerticalStrut(20)); // 添加20像素的垂直间隙
+		panel.add(Box.createVerticalStrut(20));
 		panel.add(joueurButton);
-		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(competitionButton);
-		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(tournoisButton);
-		panel.add(Box.createVerticalStrut(10)); // 添加10像素的垂直间隙
+		panel.add(Box.createVerticalStrut(10));
 		panel.add(mancheButton);
-		panel.add(Box.createVerticalStrut(20)); // 添加20像素的垂直间隙
+		panel.add(Box.createVerticalStrut(20));
 
 		consultationFrame.add(panel);
 		consultationFrame.pack();
-		consultationFrame.setLocationRelativeTo(null); // 将新窗口居中显示
+		consultationFrame.setLocationRelativeTo(null);
 		consultationFrame.setVisible(true);
 	}
 
