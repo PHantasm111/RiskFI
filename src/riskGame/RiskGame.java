@@ -1,5 +1,8 @@
 package riskGame;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -7,9 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -39,18 +40,166 @@ public class RiskGame {
  * propose de lancer une partie, ou autre
  */
 	private static void mainMenuGUI() {
-		//options proposees
-		String[] optionsToChoose = { "Lancer une partie", "Consulter trophées" };
-		//question affichee
-		String choice = (String) JOptionPane.showInputDialog(null, "Que voulez vous faire ? ", "Risk e-sport [MENU]",
-				JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
-		if (choice == null) {
-			System.out.println("Quitting app...");
-		} else if (choice == "Lancer une partie") {
-			choixCompetitionGUI();
-		} else if(choice == "Consulter trophées") {
-			afficherTrophees();
-		}
+		JFrame frame = new JFrame("Risk e-sport [MENU]");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// disposition verticale
+		frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+
+		JButton consulterButton = new JButton("Consultation");
+		JButton creationButton = new JButton("Création");
+		JButton jouerButton = new JButton("Commencer le jeu");
+
+		consulterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				afficherConsultationOptions();
+			}
+		});
+
+		creationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				afficherCreationOptions();
+			}
+		});
+
+		jouerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				//options proposees
+				String[] optionsToChoose = { "Lancer une partie", "Consulter trophées" };
+				//question affichee
+				String choice = (String) JOptionPane.showInputDialog(null, "Que voulez vous faire ? ", "Risk e-sport [MENU]",
+						JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
+				if (choice == null) {
+					System.out.println("Quitting app...");
+				} else if (choice == "Lancer une partie") {
+					choixCompetitionGUI();
+				} else if(choice == "Consulter trophées") {
+					afficherTrophees();
+				}
+
+			}
+		});
+
+
+		frame.add(Box.createVerticalStrut(20));
+		frame.add(consulterButton);
+		frame.add(Box.createVerticalStrut(10));
+		frame.add(creationButton);
+		frame.add(Box.createVerticalStrut(10));
+		frame.add(jouerButton);
+		frame.add(Box.createVerticalStrut(20));
+
+
+		frame.setLocationRelativeTo(null);
+		frame.pack();
+		frame.setVisible(true);
+
+	}
+
+	/**
+	 * Affiche une nouvelle fenêtre avec des options de création.
+	 * Cette fenêtre contient deux boutons : "Création de Joueur" et "Création de compétition".
+	 * Lorsque ces boutons sont cliqués, des actions spécifiques associées à chaque bouton peuvent être exécutées.
+	 */
+	private static void afficherCreationOptions() {
+		JFrame creationFrame = new JFrame("Options de Création");
+		creationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // La fermeture de cette fenêtre n'affecte pas la fenêtre principale
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JButton joueurCreationButton = new JButton("Création de Joueur");
+		JButton competitionCreationButton = new JButton("Création de compétition");
+
+		joueurCreationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// to do Exécute l'action associée au bouton "Création de Joueur".
+			}
+		});
+
+		competitionCreationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//  to do Exécute l'action associée au bouton "Création de compétition".
+			}
+		});
+
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(joueurCreationButton);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(competitionCreationButton);
+		panel.add(Box.createVerticalStrut(20));
+
+
+		creationFrame.add(panel);
+		creationFrame.pack();
+		creationFrame.setLocationRelativeTo(null); // Centrer la nouvelle fenêtre
+		creationFrame.setVisible(true);
+	}
+
+	/**
+	 * Affiche une fenêtre modale contenant des options de consultation, telles que "Joueur",
+	 * "Compétition", "Tournois" et "Manche". Chaque option est représentée par un bouton
+	 * permettant d'exécuter une action associée à cette option.
+	 */
+	private static void afficherConsultationOptions() {
+		JFrame consultationFrame = new JFrame("Options de Consultation");
+		consultationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JButton joueurButton = new JButton("Joueur");
+		JButton competitionButton = new JButton("Compétition");
+		JButton tournoisButton = new JButton("Tournois");
+		JButton mancheButton = new JButton("Manche");
+
+		joueurButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Joueur".
+			}
+		});
+
+		competitionButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Compétition".
+			}
+		});
+
+		tournoisButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Tournois".
+			}
+		});
+
+		mancheButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Exécute l'action associée au bouton "Manche".
+			}
+		});
+
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(joueurButton);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(competitionButton);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(tournoisButton);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(mancheButton);
+		panel.add(Box.createVerticalStrut(20));
+
+		consultationFrame.add(panel);
+		consultationFrame.pack();
+		consultationFrame.setLocationRelativeTo(null);
+		consultationFrame.setVisible(true);
 	}
 
 	/**
@@ -507,3 +656,4 @@ public class RiskGame {
 	}
 
 }
+
