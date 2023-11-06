@@ -60,8 +60,7 @@ public class RiskGame {
 		creationButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 	to do - fonction after click button creation
-
+				afficherCreationOptions();
 			}
 		});
 
@@ -100,6 +99,49 @@ public class RiskGame {
 		frame.setVisible(true);
 
 	}
+
+	/**
+	 * Affiche une nouvelle fenêtre avec des options de création.
+	 * Cette fenêtre contient deux boutons : "Création de Joueur" et "Création de compétition".
+	 * Lorsque ces boutons sont cliqués, des actions spécifiques associées à chaque bouton peuvent être exécutées.
+	 */
+	private static void afficherCreationOptions() {
+		JFrame creationFrame = new JFrame("Options de Création");
+		creationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 关闭该窗口时不影响主窗口
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JButton joueurCreationButton = new JButton("Création de Joueur");
+		JButton competitionCreationButton = new JButton("Création de compétition");
+
+		joueurCreationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// to do Exécute l'action associée au bouton "Création de Joueur".
+			}
+		});
+
+		competitionCreationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//  to do Exécute l'action associée au bouton "Création de compétition".
+			}
+		});
+
+		panel.add(Box.createVerticalStrut(20));
+		panel.add(joueurCreationButton);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(competitionCreationButton);
+		panel.add(Box.createVerticalStrut(20));
+
+
+		creationFrame.add(panel);
+		creationFrame.pack();
+		creationFrame.setLocationRelativeTo(null); // 让新窗口居中显示
+		creationFrame.setVisible(true);
+	}
+
 
 	/**
 	 * permet de choisir une competition
