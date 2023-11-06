@@ -157,7 +157,6 @@ public class RiskGame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Exécute l'action associée au bouton "Joueur".
-				// Vous pouvez添加自己的逻辑在这里。
 			}
 		});
 
