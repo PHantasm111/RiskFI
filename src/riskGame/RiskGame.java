@@ -1,15 +1,11 @@
 package riskGame;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -28,14 +24,159 @@ public class RiskGame {
 	static Manche manche;
 	static PlanispherePanel planisphere;
 
-	/**
-	 * lance la premiere fenetre
-	 */
+
 	public static void main(String[] args) {
-		mainMenuGUI();
+		avantMainGUI();
 	}
-	
-/**
+
+	/**
+	 * Affiche une boîte de dialogue avec des options pour choisir une action parmi "Consultation", "Création" et "Jouer".
+	 * Le choix de l'utilisateur détermine l'action à entreprendre dans l'application.
+	 *
+	 * - Si "Consultation" est sélectionné, cela ouvre l'interface de consultation.
+	 * - Si "Création" est sélectionné, cela devrait effectuer des actions liées à la création de compétitions et de joueurs.
+	 * - Si "Jouer" est sélectionné, cela ouvre l'interface du menu principal.
+	 */
+	private static void avantMainGUI(){
+		String[] optionsToChoose = { "Consultation", "Création", "Jouer" };
+
+
+		int choice = JOptionPane.showOptionDialog(null, "Choisir une action : ", "Risk e-sport [MENU]",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsToChoose, optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Consultation")) {
+				// Consulter les infos
+				consultationGUI();
+
+			} else if (selectedOption.equals("Création")) {
+				// Création des competitions et des joueurs
+
+			} else if (selectedOption.equals("Jouer")) {
+				mainMenuGUI();
+			}
+		}
+	}
+
+	/**
+	 * Affiche une boîte de dialogue permettant de choisir parmi les options "Joueur", "Compétition", "Tournois" et "Manche" pour effectuer une consultation.
+	 * Le choix de l'utilisateur détermine le type de consultation, et en fonction de cette sélection, des opérations de consultation seront exécutées ou des informations connexes seront affichées.
+	 *
+	 * - Si "Joueur" est choisi, des informations sur le joueur seront affichées.
+	 * - Si "Compétition" est choisi, des opérations de consultation relatives aux compétitions seront exécutées.
+	 * - Si "Tournois" est choisi, des opérations de consultation relatives aux tournois seront exécutées.
+	 * - Si "Manche" est choisi, des opérations de consultation relatives aux tours de jeu seront exécutées.
+	 */
+	private static void consultationGUI() {
+		String[] optionsToChoose = { "Joueur", "Compétition", "Tournois", "Manche"};
+
+		int choice = JOptionPane.showOptionDialog(null,
+				"Choisir une partie pour consulter.",
+				"Risk-Consultation",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				optionsToChoose,
+				optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Joueur")) {
+				// afficher tous les infos de joueur
+				afInfoJoueur();
+
+			} else if (selectedOption.equals("Compétition")) {
+				// TODO: afficher tous les infos de Compétition
+//				afInfoCompétition();
+
+			} else if (selectedOption.equals("Tournois")) {
+				// TODO: afficher tous les infos de Tournois
+//				afInfoTournois();
+
+			} else if (selectedOption.equals("Manche")){
+				// TODO: afficher tous les infos de Manche
+//				afInfoManche();
+			}
+		}
+
+	}
+
+	/**
+	 * Retrieves information about players from the database and processes the data.
+	 * This method queries the database for player information and processes the results.
+	 * The retrieved information includes player details, tournament, competition, round, team,
+	 * and participation data.
+	 *
+	 * @throws Exception if there is an error while retrieving or processing the data.
+	 */
+	private static void afInfoJoueur() {
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
+
+			// Execute query et récupérer les infos de joueur
+			String query =
+					"SELECT * FROM joueur, tournoi, competition, manche, inscrire, equipe"
+							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
+							+ " AND tournoi.numeroCompetition = competition.numeroCompetition"
+							+ " AND joueur.numeroJoueur = inscrire.numeroJoueur"
+							+ " AND inscrire.numeroManche = manche.numeroManche"
+							+ " AND joueur.numeroEquipe = Equipe.numeroEquipe";
+
+			ResultSet resultat = stmt.executeQuery(query);
+
+			// 获取结果集的元数据（列名）
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// 创建表格模型
+			DefaultTableModel tableModel = new DefaultTableModel();
+
+			// 添加列名
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
+			}
+
+			// 添加行数据
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// 创建 JTable 并加载数据
+			JTable table = new JTable(tableModel);
+
+			// 创建滚动面板并将表格添加到其中
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			// 创建一个 JFrame 来显示表格
+			JFrame frame = new JFrame("Table Display");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(scrollPane);
+			frame.pack();
+			frame.setVisible(true);
+
+			con.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
  * propose de lancer une partie, ou autre
  */
 	private static void mainMenuGUI() {
