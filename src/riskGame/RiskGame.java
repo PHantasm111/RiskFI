@@ -1,15 +1,11 @@
 package riskGame;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -28,13 +24,19 @@ public class RiskGame {
 	static Manche manche;
 	static PlanispherePanel planisphere;
 
-	/**
-	 * lance la premiere fenetre
-	 */
+
 	public static void main(String[] args) {
 		avantMainGUI();
 	}
 
+	/**
+	 * Affiche une boîte de dialogue avec des options pour choisir une action parmi "Consultation", "Création" et "Jouer".
+	 * Le choix de l'utilisateur détermine l'action à entreprendre dans l'application.
+	 *
+	 * - Si "Consultation" est sélectionné, cela ouvre l'interface de consultation.
+	 * - Si "Création" est sélectionné, cela devrait effectuer des actions liées à la création de compétitions et de joueurs.
+	 * - Si "Jouer" est sélectionné, cela ouvre l'interface du menu principal.
+	 */
 	private static void avantMainGUI(){
 		String[] optionsToChoose = { "Consultation", "Création", "Jouer" };
 
@@ -59,6 +61,15 @@ public class RiskGame {
 		}
 	}
 
+	/**
+	 * Affiche une boîte de dialogue permettant de choisir parmi les options "Joueur", "Compétition", "Tournois" et "Manche" pour effectuer une consultation.
+	 * Le choix de l'utilisateur détermine le type de consultation, et en fonction de cette sélection, des opérations de consultation seront exécutées ou des informations connexes seront affichées.
+	 *
+	 * - Si "Joueur" est choisi, des informations sur le joueur seront affichées.
+	 * - Si "Compétition" est choisi, des opérations de consultation relatives aux compétitions seront exécutées.
+	 * - Si "Tournois" est choisi, des opérations de consultation relatives aux tournois seront exécutées.
+	 * - Si "Manche" est choisi, des opérations de consultation relatives aux tours de jeu seront exécutées.
+	 */
 	private static void consultationGUI() {
 		String[] optionsToChoose = { "Joueur", "Compétition", "Tournois", "Manche"};
 
@@ -113,21 +124,50 @@ public class RiskGame {
 			stmt = con.createStatement();
 
 			// Execute query et récupérer les infos de joueur
-			String query = """
-					SELECT * 
-					FROM joueur, tournoi, competition, manche, inscrire, equipe
-					WHERE manche.numeroTournoi = tournoi.numeroTournoi
-					AND tournoi.numeroCompetition = competition.numeroCompetition
-					AND joueur.numeroJoueur = inscrire.numeroJoueur
-					AND inscrire.numeroManche = manche.numeroManche
-					AND joueur.numeroEquipe = inscrire.numeroEquipe
-					""";
+			String query =
+					"SELECT * FROM joueur, tournoi, competition, manche, inscrire, equipe"
+							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
+							+ " AND tournoi.numeroCompetition = competition.numeroCompetition"
+							+ " AND joueur.numeroJoueur = inscrire.numeroJoueur"
+							+ " AND inscrire.numeroManche = manche.numeroManche"
+							+ " AND joueur.numeroEquipe = Equipe.numeroEquipe";
+
 			ResultSet resultat = stmt.executeQuery(query);
 
-			while(resultat.next()) {
+			// 获取结果集的元数据（列名）
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
 
+			// 创建表格模型
+			DefaultTableModel tableModel = new DefaultTableModel();
 
+			// 添加列名
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
 			}
+
+			// 添加行数据
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// 创建 JTable 并加载数据
+			JTable table = new JTable(tableModel);
+
+			// 创建滚动面板并将表格添加到其中
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			// 创建一个 JFrame 来显示表格
+			JFrame frame = new JFrame("Table Display");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().add(scrollPane);
+			frame.pack();
+			frame.setVisible(true);
+
 			con.close();
 
 		} catch (Exception e) {
@@ -135,7 +175,6 @@ public class RiskGame {
 		}
 
 	}
-
 
 	/**
  * propose de lancer une partie, ou autre
