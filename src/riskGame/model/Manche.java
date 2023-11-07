@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.InternalFrameListener;
 
 import riskGame.vue.PlanispherePanel;
 
@@ -145,7 +146,7 @@ public class Manche {
 		int nbrRegimentsCartes = echangerCarte();
 		//on regarde cb le joueur possede de territoire
 		int nbrTerritoires = this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours()).size();
-	// il gagne le nbr de territoire quil a divise par 3
+		// il gagne le nbr de territoire quil a divise par 3
 		int nbrRegimentsAdd = nbrTerritoires / 3;
 		
 		//s il a moins que 9 territoires il gagne quand meme 3 regiments
@@ -206,6 +207,23 @@ public class Manche {
 		if (attaquer) {
 			//on recupere les territoires quil possede
 			ArrayList<Territoire> bufferArrayList = this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours());
+
+			// initialize les parameters pour l'inscrire a BD
+			Integer numeroManche = this.numeroManche; // Integer peut stocker comme null
+			Integer numeroJoueur = null;
+			String typeAction = "Attaquer"; // enum('Attaquer', 'Renforcer', 'Deplacer')
+			Integer numeroJoueurCible = null;
+			String terrCible = null;
+			String terrSource = null;
+			Integer regimentConcerne = null;
+			String resultat = null; // enum('Reussi', 'Echoue')
+			Integer regimentDef = null;
+			// fin initialisation
+
+			// modification de numeroJoueur
+			numeroJoueur = this.planispherePanel.getJoueurEnCours().getNumeroJoueur();
+
+			// afficher les territoires possible pour lancer un attaque
 			for (Territoire t :this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours()) ) {
 				//pour attaquer depuis un territoire il faut au moins quil y est 2 regiments sur ce territoire
 				//si c pas le cas on supprime le territoire de la liste
@@ -239,6 +257,9 @@ public class Manche {
 						break;
 					}
 				}
+
+				// modification de terrSource
+				terrSource = territoireAttaquantString;
 
 				// choisir terriroire a attaquer
 				ArrayList<Territoire> territoiresPossibles = new ArrayList<>();
@@ -286,7 +307,11 @@ public class Manche {
 							territoireDefendant = territoireListe;
 						}
 					}
-					// on a territoireAttant et TerritoireAATtaquer
+					// on a territoireAttant et
+
+					// modification de terrCible
+					terrCible = territoireDefendant.getNomTerritoire();
+
 
 					// choisir nbr regiment attaquant
 					String[] optionsToChoseFrom;
