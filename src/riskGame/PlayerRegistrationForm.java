@@ -4,10 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PlayerRegistrationForm {
@@ -36,7 +33,7 @@ public class PlayerRegistrationForm {
         JLabel DateDeNaissanceLabel = new JLabel("Date de naissance:"); //creation de label
         birthdayField = new JTextField(20); //set la taille de label
 
-        JLabel equipeLabel = new JLabel("Numero d'equipe:"); //creation de label
+        JLabel equipeLabel = new JLabel("Nom d'equipe:"); //creation de label
         equipeField = new JTextField(20); //set la taille de label
 
         JButton enregistrerButton = new JButton("Enregistrer"); //creation de button
@@ -56,12 +53,23 @@ public class PlayerRegistrationForm {
         			String url = "jdbc:mysql://localhost:3306/si_risk";
         			Connection con = DriverManager.getConnection(url, "root", "");
         			stmt = con.createStatement();
-        			//execution de la requete
 
-                    String query = "INSERT INTO joueur (etatJoueur, nomJoueur, prenomJoueur, dateNaissanceJoueur, numeroEquipe) VALUES " +
-                                "('VALIDE', '" + nom + "', '" + prenom + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y')" + "," + equipe +")";
+                    //execution de la requete
+                    String query1 = "INSERT INTO equipe (nomEquipe, etatEquipe) VALUES('" + equipe + "', 'Valide')"; //用单引号把值括起来让数据库把他当作值而不是一列
+                    stmt.executeUpdate(query1);
 
-                    stmt.executeUpdate(query);
+                    String query2 = "SELECT e.numeroEquipe FROM equipe e WHERE e.nomEquipe = '" + equipe + "'"; //在SQL查询中，字符串是单引号括起来的 所以这里相当于WHERE e.nomEquipe = 'equipe'
+                    ResultSet resultat = stmt.executeQuery(query2);
+                    int numeroEquipe = 0;
+                    if (resultat.next()) {
+                            // 使用 getInt() 方法来获取整数列的值
+                            numeroEquipe = resultat.getInt("numeroEquipe");
+                        }
+                    System.out.println(numeroEquipe);
+
+                    String query3 = "INSERT INTO joueur (etatJoueur, nomJoueur, prenomJoueur, dateNaissanceJoueur, numeroEquipe) VALUES " +
+                                "('VALIDE', '" + nom + "', '" + prenom + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y')" + "," + numeroEquipe +")";
+                    stmt.executeUpdate(query3);
         		
                 	//fermer le connexion
         			con.close();
