@@ -6,6 +6,9 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -198,10 +201,74 @@ public class RiskGame {
 				// TODO lucas
 
 			} else if (selectedOption.equals("Création de compétition")) {
-				// TODO tian
+				creerCompetition();
 
 			}
 		}
+	}
+	
+	private static void creerCompetition() {
+	    // Créez une fenêtre de dialogue pour la création de compétition
+	    JFrame frame = new JFrame("Créer une compétition");
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer cette fenêtre sans quitter l'application principale
+
+	    // Création des composants
+	    JLabel nomLabel = new JLabel("Nom de la compétition :");
+	    JTextField nomField = new JTextField(20);
+
+	    JLabel dateLabel = new JLabel("Année de la compétition :");
+	    JTextField dateField = new JTextField(4);
+	    JComboBox<String> comboDate = new JComboBox<String>();
+	    comboDate.addItem("2023");
+	    comboDate.addItem("2024");
+	    comboDate.addItem("2025");
+	    
+	    JLabel debLabel = new JLabel("Début de la compétition :");
+	    JTextField debField = new JTextField(20);
+	    
+	    JLabel finLabel = new JLabel("Fin de la compétition :");
+	    JTextField finField = new JTextField(20);
+
+	    // Créez un bouton pour soumettre le formulaire
+	    JButton creerButton = new JButton("Créer");
+
+	    // Créez un panneau pour organiser les composants
+	    JPanel panel = new JPanel(new GridLayout(5, 2));
+
+	    // Ajoutez les composants au panneau
+	    panel.add(nomLabel);
+	    panel.add(nomField);
+	    panel.add(dateLabel);
+	    panel.add(comboDate);
+	    //panel.add(dateField);
+	    panel.add(debLabel);
+	    panel.add(debField);
+	    panel.add(finLabel);
+	    panel.add(finField);
+	    panel.add(new JLabel()); // Espace vide
+	    panel.add(creerButton);
+
+	    // Ajoutez le panneau à la fenêtre
+	    frame.getContentPane().add(panel);
+
+	    // Définissez l'action du bouton Créer
+	    creerButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Récupérez les valeurs saisies par l'utilisateur
+	            String nomCompetition = nomField.getText();
+	            String dateCompetition = dateField.getText();
+	            String dateDebut = debField.getText();
+	            String dateFin = finField.getText();
+	            //TEST
+	            System.out.println("Nom de la compétition : " + nomCompetition);
+
+	            frame.dispose();
+	        }
+	    });
+
+	    frame.setSize(300, 200);
+	    frame.setVisible(true);
 	}
 
 	/**
