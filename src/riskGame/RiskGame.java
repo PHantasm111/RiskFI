@@ -126,13 +126,18 @@ public class RiskGame {
 			stmt = con.createStatement();
 
 			// Execute query et récupérer les infos de joueur
-			String query =
-					"SELECT * FROM joueur, tournoi, competition, manche, inscrire, equipe"
-							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
-							+ " AND tournoi.numeroCompetition = competition.numeroCompetition"
-							+ " AND joueur.numeroJoueur = inscrire.numeroJoueur"
-							+ " AND inscrire.numeroManche = manche.numeroManche"
-							+ " AND joueur.numeroEquipe = Equipe.numeroEquipe";
+			String query = "SELECT DISTINCT joueur.numeroJoueur as NumJ, joueur.nomJoueur as NomJ, "
+						   +" joueur.prenomJoueur as PrenomJ, joueur.dateNaissanceJoueur, joueur.numeroEquipe, "
+						   +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
+						   +" competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition"
+						   +" FROM joueur"
+						   +" LEFT JOIN equipe ON joueur.numeroEquipe = equipe.numeroEquipe"
+						   +" LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur"
+						   +" LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche"
+						   +" LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi"
+						   +" LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition"
+						   +" ORDER BY `joueur`.`numeroJoueur` ASC";
+
 
 			ResultSet resultat = stmt.executeQuery(query);
 
