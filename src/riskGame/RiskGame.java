@@ -1,11 +1,17 @@
 package riskGame;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -92,29 +98,24 @@ public class RiskGame {
 				afInfoJoueur();
 
 			} else if (selectedOption.equals("Compétition")) {
-				// TODO: afficher tous les infos de Compétition
-//				afInfoCompétition();
+				// afficher tous les infos de Compétition
+				afInfoCompetition();
 
 			} else if (selectedOption.equals("Tournois")) {
-				// TODO: afficher tous les infos de Tournois
-//				afInfoTournois();
+				// afficher tous les infos de Tournois
+				afInfoTournois();
 
-			} else if (selectedOption.equals("Manche")){
-				// TODO: afficher tous les infos de Manche
-//				afInfoManche();
+			} else if (selectedOption.equals("Manche")) {
+				// afficher tous les infos de Manche
+				afInfoManche();
 			}
 		}
-
 	}
 
 
 	/**
-	 * Retrieves information about players from the database and processes the data.
-	 * This method queries the database for player information and processes the results.
-	 * The retrieved information includes player details, tournament, competition, round, team,
-	 * and participation data.
-	 *
-	 * @throws Exception if there is an error while retrieving or processing the data.
+	 * Récupère et affiche les informations des joueurs à partir de la base de données.
+	 * Cette méthode crée un tableau pour afficher les données des joueurs et fournit un bouton de retour
 	 */
 	private static void afInfoJoueur() {
 		try {
@@ -126,29 +127,33 @@ public class RiskGame {
 			stmt = con.createStatement();
 
 			// Execute query et récupérer les infos de joueur
-			String query =
-					"SELECT * FROM joueur, tournoi, competition, manche, inscrire, equipe"
-							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
-							+ " AND tournoi.numeroCompetition = competition.numeroCompetition"
-							+ " AND joueur.numeroJoueur = inscrire.numeroJoueur"
-							+ " AND inscrire.numeroManche = manche.numeroManche"
-							+ " AND joueur.numeroEquipe = Equipe.numeroEquipe";
+			String query = "SELECT DISTINCT joueur.numeroJoueur as NumJ, joueur.nomJoueur as NomJ, "
+						   +" joueur.prenomJoueur as PrenomJ, joueur.dateNaissanceJoueur, joueur.numeroEquipe, "
+						   +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
+						   +" competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition"
+						   +" FROM joueur"
+						   +" LEFT JOIN equipe ON joueur.numeroEquipe = equipe.numeroEquipe"
+						   +" LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur"
+						   +" LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche"
+						   +" LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi"
+						   +" LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition"
+						   +" ORDER BY `joueur`.`numeroJoueur` ASC";
 
 			ResultSet resultat = stmt.executeQuery(query);
 
-			// 获取结果集的元数据（列名）
+			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
 			int columnCount = metaData.getColumnCount();
 
-			// 创建表格模型
+			// Créer un modèle
 			DefaultTableModel tableModel = new DefaultTableModel();
 
-			// 添加列名
+			// Créer un modèle
 			for (int i = 1; i <= columnCount; i++) {
 				tableModel.addColumn(metaData.getColumnName(i));
 			}
 
-			// 添加行数据
+			// Ajouter des données de ligne
 			while (resultat.next()) {
 				Object[] rowData = new Object[columnCount];
 				for (int i = 1; i <= columnCount; i++) {
@@ -157,25 +162,252 @@ public class RiskGame {
 				tableModel.addRow(rowData);
 			}
 
-			// 创建 JTable 并加载数据
+			// Créer une JTable et charger des données
 			JTable table = new JTable(tableModel);
 
-			// 创建滚动面板并将表格添加到其中
 			JScrollPane scrollPane = new JScrollPane(table);
 
-			// 创建一个 JFrame 来显示表格
-			JFrame frame = new JFrame("Table Display");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.getContentPane().add(scrollPane);
-			frame.pack();
-			frame.setVisible(true);
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(scrollPane, BorderLayout.CENTER);
 
-			con.close();
+			// Afficher menu consultation
+			JButton returnButton = new JButton("Afficher menu consultation");
+			returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						con.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+					consultationGUI();
+				}
+			});
+
+			panel.add(returnButton, BorderLayout.SOUTH);
+
+			JOptionPane.showMessageDialog(null, panel, "Table de Joueur", JOptionPane.PLAIN_MESSAGE);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * Récupère et affiche les informations sur les compétitions à partir de la base de données.
+	 * Cette méthode crée un tableau pour afficher les données des compétitions et fournit un bouton de retour
+	 */
+	private static void afInfoCompetition(){
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
 
+			// Execute query et récupérer les infos de Manche
+			String query ="SELECT *"
+					+ " FROM competition";
+
+			ResultSet resultat = stmt.executeQuery(query);
+
+			// get noms de colonnes
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// Créer un modèle
+			DefaultTableModel tableModel = new DefaultTableModel();
+
+			// Créer un modèle
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
+			}
+
+			// Ajouter des données de ligne
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// Créer une JTable et charger des données
+			JTable table = new JTable(tableModel);
+
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(scrollPane, BorderLayout.CENTER);
+
+			// Afficher menu consultation
+			JButton returnButton = new JButton("Afficher menu consultation");
+			returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						con.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+					consultationGUI();
+				}
+			});
+
+			panel.add(returnButton, BorderLayout.SOUTH);
+
+			JOptionPane.showMessageDialog(null, panel, "Table de Competition", JOptionPane.PLAIN_MESSAGE);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Récupère et affiche les informations sur les Tournois à partir de la base de données.
+	 * Cette méthode crée un tableau pour afficher les données des Tournois et fournit un bouton de retour
+	 */
+	private static void afInfoTournois(){
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
+
+			// Execute query et récupérer les infos de Manche
+			String query =
+					"SELECT tournoi.*"
+							+ " FROM  tournoi, competition"
+							+ " WHERE tournoi.numeroCompetition = competition.numeroCompetition";
+
+			ResultSet resultat = stmt.executeQuery(query);
+
+			// get noms de colonnes
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// Créer un modèle
+			DefaultTableModel tableModel = new DefaultTableModel();
+
+			// Créer un modèle
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
+			}
+
+			// Ajouter des données de ligne
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// Créer une JTable et charger des données
+			JTable table = new JTable(tableModel);
+
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(scrollPane, BorderLayout.CENTER);
+
+			// Afficher menu consultation
+			JButton returnButton = new JButton("Afficher menu consultation");
+			returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						con.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+					consultationGUI();
+				}
+			});
+
+			panel.add(returnButton, BorderLayout.SOUTH);
+
+			JOptionPane.showMessageDialog(null, panel, "Table de Tournois", JOptionPane.PLAIN_MESSAGE);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Récupère et affiche les informations sur les Manches à partir de la base de données.
+	 * Cette méthode crée un tableau pour afficher les données des Manches et fournit un bouton de retour
+	 */
+	private static void afInfoManche(){
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
+
+			// Execute query et récupérer les infos de Manche
+			String query =
+					"SELECT manche.numeroManche, tournoi.numeroTournoi, competition.numeroCompetition"
+							+ " FROM  tournoi, competition, manche"
+							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
+							+ " AND tournoi.numeroCompetition = competition.numeroCompetition";
+
+			ResultSet resultat = stmt.executeQuery(query);
+
+			// get noms de colonnes
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// Créer un modèle
+			DefaultTableModel tableModel = new DefaultTableModel();
+
+			// Créer un modèle
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
+			}
+
+			// Ajouter des données de ligne
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// Créer une JTable et charger des données
+			JTable table = new JTable(tableModel);
+
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(scrollPane, BorderLayout.CENTER);
+
+			// Afficher menu consultation
+			JButton returnButton = new JButton("Afficher menu consultation");
+			returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						con.close();
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+					consultationGUI();
+				}
+			});
+
+			panel.add(returnButton, BorderLayout.SOUTH);
+			
+			JOptionPane.showMessageDialog(null, panel, "Table de Manche", JOptionPane.PLAIN_MESSAGE);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void creationGUI(){
@@ -199,10 +431,89 @@ public class RiskGame {
 				PlayerRegistrationForm registrationForm = new PlayerRegistrationForm();
                 registrationForm.display();
 			} else if (selectedOption.equals("Création de compétition")) {
-				// TODO tian
+				creerCompetition();
 
 			}
 		}
+	}
+	
+	private static void creerCompetition() {
+	    // Création de l'interface de création de compétition
+	    JFrame frame = new JFrame("Créer une compétition");
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer cette fenêtre sans quitter l'application principale
+
+	    // Création des composants
+	    JLabel nomLabel = new JLabel("Nom de la compétition :");
+	    JTextField nomField = new JTextField(20);
+
+	    JLabel dateLabel = new JLabel("Année de la compétition :");
+	    JTextField dateField = new JTextField(4);
+	    JComboBox<String> comboDate = new JComboBox<String>();
+	    comboDate.addItem("2023");
+	    comboDate.addItem("2024");
+	    comboDate.addItem("2025");
+	    
+	    JLabel debLabel = new JLabel("Début de la compétition jj/mm/yyyy :");
+	    JTextField debField = new JTextField(20);
+	    
+	    JLabel finLabel = new JLabel("Fin de la compétition :");
+	    JTextField finField = new JTextField(20);
+
+	    // Créez un bouton pour soumettre le formulaire
+	    JButton creerButton = new JButton("Créer");
+
+	    // Création d'un panneau pour organiser les composants
+	    JPanel panel = new JPanel(new GridLayout(5, 2));
+
+	    panel.add(nomLabel);
+	    panel.add(nomField);
+	    panel.add(dateLabel);
+	    panel.add(comboDate);
+	    //panel.add(dateField);
+	    panel.add(debLabel);
+	    panel.add(debField);
+	    panel.add(finLabel);
+	    panel.add(finField);
+	    panel.add(new JLabel()); // Espace vide
+	    panel.add(creerButton);
+
+	    // Ajoutez le panneau à la fenêtre
+	    frame.getContentPane().add(panel);
+
+	    // Définissez l'action du bouton Créer
+	    creerButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // transformation des données saisies par l'utilisateur en données Java
+	            String nomCompetition = nomField.getText();
+	            String dateCompetition = (String) comboDate.getSelectedItem()   ;  
+	            String dateDebut = debField.getText();
+	            String dateFin = finField.getText();
+	            //TEST
+	            System.out.println("Nom de la compétition : " + nomCompetition + dateCompetition);
+				try {
+					Statement stmt;
+					Class.forName("com.mysql.jdbc.Driver");
+					String url = "jdbc:mysql://localhost:3306/si_risk";
+					Connection con = DriverManager.getConnection(url, "root", "");
+					stmt = con.createStatement();
+						stmt.executeUpdate(
+								"INSERT INTO `competition`(`nomCompetition`, " 
+								+ "`anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
+								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,"
+								+ "'"+dateFin+"' ,'Planifiee')");
+					
+					System.out.println("Insertion finie");
+
+				}catch (Exception ev) {
+					ev.printStackTrace();
+				}
+				frame.dispose();
+	        	}
+	    });
+
+	    frame.setSize(300, 200);
+	    frame.setVisible(true);
 	}
 
 	private static void creationJoueurInterface() {
