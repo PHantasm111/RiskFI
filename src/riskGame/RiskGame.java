@@ -99,8 +99,8 @@ public class RiskGame {
 //				afInfoCompétition();
 
 			} else if (selectedOption.equals("Tournois")) {
-				// TODO: afficher tous les infos de Tournois
-//				afInfoTournois();
+				// afficher tous les infos de Tournois
+				afInfoTournois();
 
 			} else if (selectedOption.equals("Manche")){
 				// afficher tous les infos de Manche
@@ -180,7 +180,15 @@ public class RiskGame {
 		}
 
 	}
+	private static void afInfoTournois(){
 
+	}
+
+	/**
+	 * Récupère et affiche les informations sur les Manches à partir de la base de données.
+	 * Cette méthode crée un tableau pour afficher les données des Manches et fournit un bouton de retour
+	 * pour revenir au menu principal. En cliquant sur le bouton de retour, la fenêtre du tableau sera fermée.
+	 */
 	private static void afInfoManche(){
 		try {
 			Statement stmt;
@@ -199,19 +207,19 @@ public class RiskGame {
 
 			ResultSet resultat = stmt.executeQuery(query);
 
-			// 获取结果集的元数据（列名）
+			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
 			int columnCount = metaData.getColumnCount();
 
-			// 创建表格模型
+			// Créer un modèle
 			DefaultTableModel tableModel = new DefaultTableModel();
 
-			// 添加列名
+			// Créer un modèle
 			for (int i = 1; i <= columnCount; i++) {
 				tableModel.addColumn(metaData.getColumnName(i));
 			}
 
-			// 添加行数据
+			// Ajouter des données de ligne
 			while (resultat.next()) {
 				Object[] rowData = new Object[columnCount];
 				for (int i = 1; i <= columnCount; i++) {
@@ -220,35 +228,31 @@ public class RiskGame {
 				tableModel.addRow(rowData);
 			}
 
-			// 创建 JTable 并加载数据
+			// Créer une JTable et charger des données
 			JTable table = new JTable(tableModel);
 
-			// 创建滚动面板并将表格添加到其中
 			JScrollPane scrollPane = new JScrollPane(table);
 
-			// 创建一个 JPanel 包含表格和返回按钮
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(scrollPane, BorderLayout.CENTER);
 
-			// 创建返回按钮
-			JButton returnButton = new JButton("Retour au menu principal");
+			// Afficher menu principal
+			JButton returnButton = new JButton("Afficher menu principal");
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						con.close(); // 关闭数据库连接
+						con.close();
 					} catch (SQLException ex) {
 						throw new RuntimeException(ex);
 					}
-					avantMainGUI(); // 返回主菜单
-
+					avantMainGUI();
 				}
 			});
 
 			panel.add(returnButton, BorderLayout.SOUTH);
-
-			// 显示对话框
-			JOptionPane.showMessageDialog(null, panel, "Table Display", JOptionPane.PLAIN_MESSAGE);
+			
+			JOptionPane.showMessageDialog(null, panel, "Table de Manche", JOptionPane.PLAIN_MESSAGE);
 
 		} catch (Exception e) {
 			e.printStackTrace();
