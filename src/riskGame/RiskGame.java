@@ -427,11 +427,15 @@ public class RiskGame {
 		} else {
 			String selectedOption = optionsToChoose[choice];
 			if (selectedOption.equals("Création de Joueur")) {
-				// TODO lucas
+				// TODO TIAN
 				PlayerRegistrationForm registrationForm = new PlayerRegistrationForm();
                 registrationForm.display();
 			} else if (selectedOption.equals("Création de compétition")) {
+
 				creerCompetition();
+
+				// TODO Lucas
+
 
 			}
 		}
@@ -516,9 +520,6 @@ public class RiskGame {
 	    frame.setVisible(true);
 	}
 
-	private static void creationJoueurInterface() {
-		
-	}
 	/**
  * propose de lancer une partie, ou autre
  */
