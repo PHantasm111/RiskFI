@@ -9,6 +9,9 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -427,10 +430,89 @@ public class RiskGame {
 				// TODO lucas
 
 			} else if (selectedOption.equals("Création de compétition")) {
-				// TODO tian
+				creerCompetition();
 
 			}
 		}
+	}
+	
+	private static void creerCompetition() {
+	    // Création de l'interface de création de compétition
+	    JFrame frame = new JFrame("Créer une compétition");
+	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer cette fenêtre sans quitter l'application principale
+
+	    // Création des composants
+	    JLabel nomLabel = new JLabel("Nom de la compétition :");
+	    JTextField nomField = new JTextField(20);
+
+	    JLabel dateLabel = new JLabel("Année de la compétition :");
+	    JTextField dateField = new JTextField(4);
+	    JComboBox<String> comboDate = new JComboBox<String>();
+	    comboDate.addItem("2023");
+	    comboDate.addItem("2024");
+	    comboDate.addItem("2025");
+	    
+	    JLabel debLabel = new JLabel("Début de la compétition jj/mm/yyyy :");
+	    JTextField debField = new JTextField(20);
+	    
+	    JLabel finLabel = new JLabel("Fin de la compétition :");
+	    JTextField finField = new JTextField(20);
+
+	    // Créez un bouton pour soumettre le formulaire
+	    JButton creerButton = new JButton("Créer");
+
+	    // Création d'un panneau pour organiser les composants
+	    JPanel panel = new JPanel(new GridLayout(5, 2));
+
+	    panel.add(nomLabel);
+	    panel.add(nomField);
+	    panel.add(dateLabel);
+	    panel.add(comboDate);
+	    //panel.add(dateField);
+	    panel.add(debLabel);
+	    panel.add(debField);
+	    panel.add(finLabel);
+	    panel.add(finField);
+	    panel.add(new JLabel()); // Espace vide
+	    panel.add(creerButton);
+
+	    // Ajoutez le panneau à la fenêtre
+	    frame.getContentPane().add(panel);
+
+	    // Définissez l'action du bouton Créer
+	    creerButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // transformation des données saisies par l'utilisateur en données Java
+	            String nomCompetition = nomField.getText();
+	            String dateCompetition = (String) comboDate.getSelectedItem()   ;  
+	            String dateDebut = debField.getText();
+	            String dateFin = finField.getText();
+	            //TEST
+	            System.out.println("Nom de la compétition : " + nomCompetition + dateCompetition);
+				try {
+					Statement stmt;
+					Class.forName("com.mysql.jdbc.Driver");
+					String url = "jdbc:mysql://localhost:3306/si_risk";
+					Connection con = DriverManager.getConnection(url, "root", "");
+					stmt = con.createStatement();
+						stmt.executeUpdate(
+								"INSERT INTO `competition`(`nomCompetition`, " 
+								+ "`anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
+								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,"
+								+ "'"+dateFin+"' ,'Planifiee')");
+					
+					System.out.println("Insertion finie");
+
+				}catch (Exception ev) {
+					ev.printStackTrace();
+				}
+				frame.dispose();
+	        	}
+	    });
+
+	    frame.setSize(300, 200);
+	    frame.setVisible(true);
 	}
 
 	/**
