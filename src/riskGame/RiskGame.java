@@ -208,7 +208,7 @@ public class RiskGame {
 	}
 	
 	private static void creerCompetition() {
-	    // Créez une fenêtre de dialogue pour la création de compétition
+	    // Création de l'interface de création de compétition
 	    JFrame frame = new JFrame("Créer une compétition");
 	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer cette fenêtre sans quitter l'application principale
 
@@ -232,10 +232,9 @@ public class RiskGame {
 	    // Créez un bouton pour soumettre le formulaire
 	    JButton creerButton = new JButton("Créer");
 
-	    // Créez un panneau pour organiser les composants
+	    // Création d'un panneau pour organiser les composants
 	    JPanel panel = new JPanel(new GridLayout(5, 2));
 
-	    // Ajoutez les composants au panneau
 	    panel.add(nomLabel);
 	    panel.add(nomField);
 	    panel.add(dateLabel);
@@ -255,16 +254,31 @@ public class RiskGame {
 	    creerButton.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	            // Récupérez les valeurs saisies par l'utilisateur
+	            // transformation des données saisies par l'utilisateur en données Java
 	            String nomCompetition = nomField.getText();
-	            String dateCompetition = dateField.getText();
+	            String dateCompetition = (String) comboDate.getSelectedItem()   ;  
 	            String dateDebut = debField.getText();
 	            String dateFin = finField.getText();
 	            //TEST
-	            System.out.println("Nom de la compétition : " + nomCompetition);
+	            System.out.println("Nom de la compétition : " + nomCompetition + dateCompetition);
+				try {
+					Statement stmt;
+					Class.forName("com.mysql.jdbc.Driver");
+					String url = "jdbc:mysql://localhost:3306/si_risk";
+					Connection con = DriverManager.getConnection(url, "root", "");
+					stmt = con.createStatement();
+						stmt.executeUpdate(
+								"INSERT INTO `competition`(`nomCompetition`, " 
+								+ "`anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
+								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,'"+dateFin+"' ,'Planifiee')");
+					
+					System.out.println("Insertion finie");
 
-	            frame.dispose();
-	        }
+				}catch (Exception ev) {
+					ev.printStackTrace();
+				}
+				frame.dispose();
+	        	}
 	    });
 
 	    frame.setSize(300, 200);
