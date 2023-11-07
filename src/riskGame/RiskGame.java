@@ -195,10 +195,10 @@ public class RiskGame {
 		} else {
 			String selectedOption = optionsToChoose[choice];
 			if (selectedOption.equals("Création de Joueur")) {
-				// TODO
+				// TODO lucas
 
 			} else if (selectedOption.equals("Création de compétition")) {
-				// TODO
+				// TODO tian
 
 			}
 		}
