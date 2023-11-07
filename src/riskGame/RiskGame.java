@@ -223,7 +223,7 @@ public class RiskGame {
 	    comboDate.addItem("2024");
 	    comboDate.addItem("2025");
 	    
-	    JLabel debLabel = new JLabel("Début de la compétition :");
+	    JLabel debLabel = new JLabel("Début de la compétition jj/mm/yyyy :");
 	    JTextField debField = new JTextField(20);
 	    
 	    JLabel finLabel = new JLabel("Fin de la compétition :");
@@ -270,7 +270,8 @@ public class RiskGame {
 						stmt.executeUpdate(
 								"INSERT INTO `competition`(`nomCompetition`, " 
 								+ "`anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
-								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,'"+dateFin+"' ,'Planifiee')");
+								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,"
+								+ "'"+dateFin+"' ,'Planifiee')");
 					
 					System.out.println("Insertion finie");
 
