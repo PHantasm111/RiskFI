@@ -196,7 +196,8 @@ public class RiskGame {
 			String selectedOption = optionsToChoose[choice];
 			if (selectedOption.equals("Création de Joueur")) {
 				// TODO lucas
-
+				PlayerRegistrationForm registrationForm = new PlayerRegistrationForm();
+                registrationForm.display();
 			} else if (selectedOption.equals("Création de compétition")) {
 				// TODO tian
 
@@ -204,6 +205,9 @@ public class RiskGame {
 		}
 	}
 
+	private static void creationJoueurInterface() {
+		
+	}
 	/**
  * propose de lancer une partie, ou autre
  */
