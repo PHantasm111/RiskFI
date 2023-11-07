@@ -1,5 +1,8 @@
 package riskGame;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,8 +103,8 @@ public class RiskGame {
 //				afInfoTournois();
 
 			} else if (selectedOption.equals("Manche")){
-				// TODO: afficher tous les infos de Manche
-//				afInfoManche();
+				// afficher tous les infos de Manche
+				afInfoManche();
 			}
 		}
 
@@ -176,6 +179,80 @@ public class RiskGame {
 			e.printStackTrace();
 		}
 
+	}
+
+	private static void afInfoManche(){
+		try {
+			Statement stmt;
+			// Connection avec la db
+			Class.forName("com.mysql.jdbc.Driver");
+			String url = "jdbc:mysql://localhost:3306/si_risk";
+			Connection con = DriverManager.getConnection(url, "root", "");
+			stmt = con.createStatement();
+
+			// Execute query et récupérer les infos de Manche
+			String query =
+					"SELECT manche.numeroManche, tournoi.numeroTournoi, competition.numeroCompetition"
+							+ " FROM  tournoi, competition, manche"
+							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
+							+ " AND tournoi.numeroCompetition = competition.numeroCompetition";
+
+			ResultSet resultat = stmt.executeQuery(query);
+
+			// 获取结果集的元数据（列名）
+			ResultSetMetaData metaData = resultat.getMetaData();
+			int columnCount = metaData.getColumnCount();
+
+			// 创建表格模型
+			DefaultTableModel tableModel = new DefaultTableModel();
+
+			// 添加列名
+			for (int i = 1; i <= columnCount; i++) {
+				tableModel.addColumn(metaData.getColumnName(i));
+			}
+
+			// 添加行数据
+			while (resultat.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultat.getObject(i);
+				}
+				tableModel.addRow(rowData);
+			}
+
+			// 创建 JTable 并加载数据
+			JTable table = new JTable(tableModel);
+
+			// 创建滚动面板并将表格添加到其中
+			JScrollPane scrollPane = new JScrollPane(table);
+
+			// 创建一个 JPanel 包含表格和返回按钮
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(scrollPane, BorderLayout.CENTER);
+
+			// 创建返回按钮
+			JButton returnButton = new JButton("Retour au menu principal");
+			returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						con.close(); // 关闭数据库连接
+					} catch (SQLException ex) {
+						throw new RuntimeException(ex);
+					}
+					avantMainGUI(); // 返回主菜单
+
+				}
+			});
+
+			panel.add(returnButton, BorderLayout.SOUTH);
+
+			// 显示对话框
+			JOptionPane.showMessageDialog(null, panel, "Table Display", JOptionPane.PLAIN_MESSAGE);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void creationGUI(){
