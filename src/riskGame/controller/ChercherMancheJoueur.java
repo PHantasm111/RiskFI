@@ -17,6 +17,11 @@ public class ChercherMancheJoueur {
     private JTextField nomField; //Creation de field
     private JTextField prenomField; //Creation de field
 
+
+    /**
+     * Constructeur de la classe ChercherMancheJoueur.
+     * Initialise et configure l'interface graphique de recherche de joueur.
+     */
     public ChercherMancheJoueur() {
         frame = new JFrame("Recherche de joueur");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,16 +39,22 @@ public class ChercherMancheJoueur {
         JButton ChercherButton = new JButton("Chercher");
         JButton returnButton = new JButton("Afficher menu consultation");
 
+
         Box buttonBox = Box.createVerticalBox();
         buttonBox.add(ChercherButton);
         buttonBox.add(returnButton);
 
+
         JLabel messageLabel = new JLabel();
         messageLabel.setForeground(Color.RED);
+
         ChercherButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String nom = nomField.getText();
                 String prenom = prenomField.getText();
+
+                // 清空消息
+                messageLabel.setText("");
 
                 // Base de donnees
                 GestionBD gestionBD = new GestionBD();
@@ -51,15 +62,11 @@ public class ChercherMancheJoueur {
 
                 try {
                     if (!resultat.isBeforeFirst()) {
-                        // 数据库中不存在该玩家，显示消息
                         messageLabel.setText("Ce joueur n'existe pas.");
                     } else {
-                        // 数据库中存在该玩家，清空消息
-                        messageLabel.setText("");
-                        // 继续查询和显示结果
                         displayResultSet(resultat);
                     }
-                } catch ( SQLException ex) {
+                } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
                 gestionBD.fermerConnexion();
@@ -78,11 +85,19 @@ public class ChercherMancheJoueur {
         panel.add(prenomLabel);
         panel.add(prenomField);
 
+        panel.add(messageLabel);
+
         panel.add(buttonBox);
 
         frame.add(panel);
     }
 
+
+    /**
+     * Affiche les résultats d'une requête SQL sous forme de table.
+     *
+     * @param resultat Le ResultSet contenant les résultats de la requête.
+     */
     private void displayResultSet(ResultSet resultat) {
         try {
             // Créer un modèle pour les données de la table
