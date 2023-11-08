@@ -425,7 +425,8 @@ public class RiskGame {
 		} else {
 			String selectedOption = optionsToChoose[choice];
 			if (selectedOption.equals("Création de Joueur")) {
-				// TODO lucas
+				PlayerRegistrationForm registrationForm = new PlayerRegistrationForm();
+				registrationForm.display();
 
 			} else if (selectedOption.equals("Création de compétition")) {
 				creerCompetition();
