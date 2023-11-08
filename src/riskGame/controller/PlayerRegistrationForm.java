@@ -1,4 +1,4 @@
-package riskGame;
+package riskGame.controller;
 
 import riskGame.controller.GestionBD;
 
@@ -74,6 +74,5 @@ public class PlayerRegistrationForm {
     public void display() {
         frame.setVisible(true);
     }
-
 
 }

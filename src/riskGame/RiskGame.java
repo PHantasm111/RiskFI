@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import riskGame.controller.ChercherMancheJoueur;
+import riskGame.controller.PlayerRegistrationForm;
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
 import riskGame.model.Joueur;
@@ -75,7 +77,7 @@ public class RiskGame {
 	 * - Si "Tournois" est choisi, des opérations de consultation relatives aux tournois seront exécutées.
 	 * - Si "Manche" est choisi, des opérations de consultation relatives aux tours de jeu seront exécutées.
 	 */
-	private static void consultationGUI() {
+	public static void consultationGUI() {
 		String[] optionsToChoose = { "Joueur", "Compétition", "Tournois", "Manche"};
 
 		int choice = JOptionPane.showOptionDialog(null,
@@ -144,8 +146,8 @@ public class RiskGame {
 
 			} else if (selectedOption.equals("Trouver la manche du joueur")) {
 				// afficher tous les manche du joueur
-				chercherMancheJoueur();
-
+				ChercherMancheJoueur cherchermanchejoueur = new ChercherMancheJoueur();
+				cherchermanchejoueur.display();
 			}
 		}
 	}
@@ -210,9 +212,6 @@ public class RiskGame {
 		}
 	}
 
-	public static void chercherMancheJoueur(){
-
-	}
 
 	/**
 	 * Récupère et affiche les informations sur les compétitions à partir de la base de données.
@@ -370,7 +369,6 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					consultationGUI();
 				}
 			});
@@ -470,9 +468,7 @@ public class RiskGame {
 				GestionBD gestionBD = new GestionBD();
 				gestionBD.insererCompetition(nomCompetition, dateCompetition, dateDebut, dateFin);
 				gestionBD.fermerConnexion();
-				
-				
-				
+
 				frame.dispose();
 	        	}
 	    });
