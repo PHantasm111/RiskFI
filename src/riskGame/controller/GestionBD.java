@@ -90,7 +90,9 @@ public class GestionBD {
         }
     }
 
+    public ResultSet getInfoMancheJoueur(){
 
+    }
 
     public void creationJoueur(String nom,String prenom,String birthday,String equipe){
         try {
