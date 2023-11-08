@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.InternalFrameListener;
 
+import riskGame.controller.GestionBD;
 import riskGame.vue.PlanispherePanel;
 
 import java.util.Arrays;
@@ -219,7 +220,6 @@ public class Manche {
             // fin initialisation
 
 
-
             // afficher les territoires possible pour lancer un attaque
             for (Territoire t : this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours())) {
                 //pour attaquer depuis un territoire il faut au moins quil y est 2 regiments sur ce territoire
@@ -369,26 +369,12 @@ public class Manche {
                         resultatsDesAttaque[i] = lancerUnDe();
                     }
 
-                    // changer le format de combinedDesAttaque : [1, 2, 3] -> 123
-                    int combinedDesAttaque = 0;
-                    for (int num : resultatsDesAttaque) {
-                        combinedDesAttaque = combinedDesAttaque * 10 + num;
-                    }
-
-
                     //titrage des dés défense
                     int[] resultatsDesDefense = new int[Integer.parseInt(nombreRegimentsPourDefendre)];
                     for (int j = 0; j < resultatsDesDefense.length; j++) {
                         resultatsDesDefense[j] = lancerUnDe();
 
                     }
-
-                    // changer le format de combinedDesDefense : [1, 2, 3] -> 123
-                    int combinedDesDefense = 0;
-                    for (int num : resultatsDesDefense) {
-                        combinedDesDefense = combinedDesDefense * 10 + num;
-                    }
-
 
                     //comparer les résultats des différents dés
                     //triage des tableaux
@@ -397,6 +383,18 @@ public class Manche {
 
                     Arrays.sort(resultatsDesDefense);
                     reverse(resultatsDesDefense);
+
+                    // changer le format de combinedDesAttaque : [1, 2, 3] -> 123
+                    int combinedDesAttaque = 0;
+                    for (int num : resultatsDesAttaque) {
+                        combinedDesAttaque = combinedDesAttaque * 10 + num;
+                    }
+
+                    // changer le format de combinedDesDefense : [1, 2, 3] -> 123
+                    int combinedDesDefense = 0;
+                    for (int num : resultatsDesDefense) {
+                        combinedDesDefense = combinedDesDefense * 10 + num;
+                    }
 
                     //comparer les duos de des (cf regles du jeu)
                     int nombreRegimentsDefenseTues = 0;
@@ -412,9 +410,9 @@ public class Manche {
                             }
                         }
 
-                        if (nombreRegimentsDefenseTues == 1){
+                        if (nombreRegimentsDefenseTues == 1) {
                             resultat = "Reussi";
-                        } else if (nombreRegimentsAttaqueTues == 1){
+                        } else if (nombreRegimentsAttaqueTues == 1) {
                             resultat = "Echoue";
                         }
 
@@ -427,9 +425,9 @@ public class Manche {
                             }
                         }
 
-                        if (nombreRegimentsDefenseTues == 1){
+                        if (nombreRegimentsDefenseTues == 1) {
                             resultat = "Reussi";
-                        } else if (nombreRegimentsAttaqueTues == 1){
+                        } else if (nombreRegimentsAttaqueTues == 1) {
                             resultat = "Echoue";
                         }
                     }
@@ -463,17 +461,23 @@ public class Manche {
                         }
                     }
 
-                    System.out.println("numeroManche: "+ numeroManche);
+                    System.out.println("numeroManche: " + numeroManche);
                     System.out.println("numeroJoueur " + numeroJoueur);
-                    System.out.println("numeroJoueurCible "+ numeroJoueurCible);
+                    System.out.println("numeroJoueurCible " + numeroJoueurCible);
                     System.out.println("typeAction " + typeAction);
                     System.out.println("terrCible " + terrCible);
-                    System.out.println("terrSource :"+ terrSource);
+                    System.out.println("terrSource :" + terrSource);
                     System.out.println("regimentConcerne " + regimentConcerne);
                     System.out.println("resultat " + resultat);
                     System.out.println("regimentDef " + regimentDef);
                     System.out.println("CDA " + combinedDesAttaque);
-                    System.out.println("CDD" +combinedDesDefense);
+                    System.out.println("CDD " + combinedDesDefense);
+
+                    GestionBD gestionBD = new GestionBD();
+                    gestionBD.insererActionJoueurAttaquer(numeroManche,numeroJoueur,typeAction,numeroJoueurCible,
+                            terrCible,terrSource,regimentConcerne,resultat,regimentDef,combinedDesAttaque,
+                            combinedDesDefense,nombreRegimentsAttaqueTues,nombreRegimentsDefenseTues);
+                    gestionBD.fermerConnexion();
 
                 }
 
