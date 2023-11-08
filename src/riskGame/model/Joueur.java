@@ -55,6 +55,7 @@ public class Joueur {
 	        this.nombreDefensesReussies = 0;
 	        this.nombreTerritoiresConquis=0;
 	        this.mesCartes = new ArrayList<>();
+			this.numeroJoueur = numeroJoueur;
 	    }
 		/**
 		 * Retourne le nom du joueur

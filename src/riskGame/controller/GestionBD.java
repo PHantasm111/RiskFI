@@ -1,9 +1,6 @@
 package riskGame.controller;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -66,6 +63,29 @@ public class GestionBD {
                     "INSERT INTO `competition`(`nomCompetition`, `anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
                             + "VALUES ('" + nomCompetition + "','" + anneeCompetition + "',STR_TO_DATE('" + dateDebut
                             + "', '%d/%m/%Y') ," + "'" + dateFin + "' ,'Planifiee')");
+            System.out.println("Insertion terminée");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insererActionJoueurAttaquer(Integer numeroManche, Integer numeroJoueur, String typeAction, Integer numeroJoueurCible,
+                                String terrCible, String terrSource, Integer regimentConcerne, String resultat, Integer regimentDef,
+                                            Integer CombinedDesAttaque, Integer CombinedDesDefense, int nombreRegimentsAttaqueTues, int nombreRegimentsDefenseTues ){
+        try{
+            Statement stmt = connection.createStatement();
+            String sql = "INSERT INTO `actionjoueur` " +
+                         "(`numeroManche`, `numeroJoueur`, `typeAction`, `numeroJoueurCible`, " +
+                         "`terrCible`, `terrSource`, `regimentConcerne`, `resultat`, `regimentDef`, " +
+                         "`CombinedDesAttaque`, `CombinedDesDefense`, `nombreRegimentsAttaqueTues`, " +
+                         "`nombreRegimentsDefenseTues`) " +
+                         "VALUES (" +
+                         numeroManche + ", " + numeroJoueur + ", '" + typeAction + "', " + numeroJoueurCible + ", '" +
+                         terrCible + "', '" + terrSource + "', " + regimentConcerne + ", '" + resultat + "', " + regimentDef + ", " +
+                         CombinedDesAttaque + ", " + CombinedDesDefense + ", " + nombreRegimentsAttaqueTues + ", " +
+                         nombreRegimentsDefenseTues + ")";
+
+            stmt.executeUpdate(sql);
             System.out.println("Insertion terminée");
         } catch (Exception e) {
             e.printStackTrace();
