@@ -248,8 +248,6 @@ public class Manche {
             } else {
 
                 // modification de numeroJoueur
-                String nomJ = this.planispherePanel.getJoueurEnCours().getNomJoueur();
-                System.out.println(nomJ);
                 numeroJoueur = this.planispherePanel.getJoueurEnCours().getNumeroJoueur();
 
                 //on recupere le territoire quil a choisi
