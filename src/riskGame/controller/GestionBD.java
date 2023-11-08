@@ -31,6 +31,35 @@ public class GestionBD {
         }
     }
 	
+	public ResultSet getInfoCompetition() {
+		try {
+			Statement stmt = connection.createStatement();
+			String query ="SELECT *"
+					+ " FROM competition";
+			ResultSet resultat = stmt.executeQuery(query);
+			return resultat;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	public ResultSet getInfoTournoi() {
+		try {
+			Statement stmt = connection.createStatement();
+			String query =
+					"SELECT tournoi.*"
+							+ " FROM  tournoi, competition"
+							+ " WHERE tournoi.numeroCompetition = competition.numeroCompetition";
+			ResultSet resultat = stmt.executeQuery(query);
+			return resultat;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
 	public ResultSet getInfoManche() {
 		try {
 			Statement stmt = connection.createStatement();
@@ -47,6 +76,8 @@ public class GestionBD {
 		}
 		
 	}
+	
+	
 
     public void creationJoueur(String nom,String prenom,String birthday,String equipe){
         try {
