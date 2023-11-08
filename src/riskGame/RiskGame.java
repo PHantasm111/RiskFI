@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -20,6 +17,7 @@ import riskGame.model.Manche;
 import riskGame.model.TypeCouleur;
 //import riskGame.model.AbstractModel;
 import riskGame.vue.PlanispherePanel;
+import riskGame.controller.GestionBD;
 
 
 public class RiskGame {
@@ -476,10 +474,10 @@ public class RiskGame {
 	    panel.add(new JLabel()); // Espace vide
 	    panel.add(creerButton);
 
-	    // Ajoutez le panneau à la fenêtre
+	    //Ajout du panneau à la fenêtre
 	    frame.getContentPane().add(panel);
 
-	    // Définissez l'action du bouton Créer
+	    //Action du bouton Créer
 	    creerButton.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -490,23 +488,13 @@ public class RiskGame {
 	            String dateFin = finField.getText();
 	            //TEST
 	            System.out.println("Nom de la compétition : " + nomCompetition + dateCompetition);
-				try {
-					Statement stmt;
-					Class.forName("com.mysql.jdbc.Driver");
-					String url = "jdbc:mysql://localhost:3306/si_risk";
-					Connection con = DriverManager.getConnection(url, "root", "");
-					stmt = con.createStatement();
-						stmt.executeUpdate(
-								"INSERT INTO `competition`(`nomCompetition`, " 
-								+ "`anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
-								+ "VALUES ('"+nomCompetition+"','"+dateCompetition+"',STR_TO_DATE('"+dateDebut+"', '%d/%m/%Y') ,"
-								+ "'"+dateFin+"' ,'Planifiee')");
-					
-					System.out.println("Insertion finie");
-
-				}catch (Exception ev) {
-					ev.printStackTrace();
-				}
+	            
+				GestionBD gestionBD = new GestionBD();
+				gestionBD.insererCompetition(nomCompetition, dateCompetition, dateDebut, dateFin);
+				gestionBD.fermerConnexion();
+				
+				
+				
 				frame.dispose();
 	        	}
 	    });
