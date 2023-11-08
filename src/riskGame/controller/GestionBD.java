@@ -115,6 +115,30 @@ public class GestionBD {
         }
     }
 
+    public void creationTournoi(int numeroOrdre, String dateDebut, String dateFin, int numeroCompetition){
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "INSERT INTO tournoi (etatTournoi, numeroOrdre, dateDebutTournoi, dateFinTournoi, numeroCompetition) VALUES("
+                    + "'Cree','" + numeroOrdre + "',STR_TO_DATE('" + dateDebut + "', '%d/%m/%Y')" + ",STR_TO_DATE('" + dateDebut + "', '%d/%m/%Y')" + ",'" + numeroCompetition + "')";
+            stmt.executeUpdate(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void creationManche(int numeroTournoi){
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "INSERT INTO manche (etatManche, numeroTournoi) VALUES("
+                    + "'Cree','" + numeroTournoi + "')";
+            stmt.executeUpdate(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public void insererCompetition(String nomCompetition, String anneeCompetition, String dateDebut, String dateFin) {

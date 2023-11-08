@@ -342,7 +342,7 @@ public class RiskGame {
 	}
 
 	private static void creationGUI(){
-		String[] optionsToChoose = { "Création de Joueur", "Création de compétition"};
+		String[] optionsToChoose = { "Création de Joueur", "Création de compétition", "Création de tournoi", "Création de manche"};
 
 		int choice = JOptionPane.showOptionDialog(null,
 				"Choisir une partie pour Création.",
@@ -363,6 +363,14 @@ public class RiskGame {
 
 			} else if (selectedOption.equals("Création de compétition")) {
 				creerCompetition();
+
+			}else if (selectedOption.equals("Création de tournoi")) {
+				CreationTournoi tournoi = new CreationTournoi();
+				tournoi.display();
+
+			}else if (selectedOption.equals("Création de manche")) {
+				CreationManche manche = new CreationManche();
+				manche.display();
 
 			}
 		}
