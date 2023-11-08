@@ -71,7 +71,15 @@ public class Manche {
                 //sinon il prend possesion du terriroire vide
                 territoire.setProprietaire(joueur);
                 territoire.ajouterRegiments(nbrRegiment);
-
+                int numeroManche = this.numeroManche;
+                int numeroJoueur = joueur.getNumeroJoueur();
+                String territoireCible = territoire.getNomTerritoire();
+                System.out.println("PLACERnumeroManche: " + numeroManche);
+                System.out.println("PLACERnumeroJoueur: " + numeroJoueur);
+                System.out.println("PLACERterritoireCible: " + territoireCible);
+                GestionBD gestionBD = new GestionBD();
+                gestionBD.insererActionJoueurRenforcer(numeroManche, numeroJoueur, territoireCible) ;
+                gestionBD.fermerConnexion();
                 return true;
             }
 
@@ -81,6 +89,15 @@ public class Manche {
             // appartient
             if (territoire.getProprietaire().equals(joueur)) {
                 territoire.ajouterRegiments(nbrRegiment);
+                int numeroManche = this.numeroManche;
+                int numeroJoueur = joueur.getNumeroJoueur();
+                String territoireCible = territoire.getNomTerritoire();
+                System.out.println("PLACERnumeroManche: " + numeroManche);
+                System.out.println("PLACERnumeroJoueur: " + numeroJoueur);
+                System.out.println("PLACERterritoireCible: " + territoireCible);
+                GestionBD gestionBD = new GestionBD();
+                gestionBD.insererActionJoueurRenforcer(numeroManche, numeroJoueur, territoireCible) ;
+                gestionBD.fermerConnexion();
                 return true;
             } else {
                 //si le territoire ne lui appartient pas on retourne false
@@ -568,7 +585,10 @@ public class Manche {
             if (territoire.getNbrRegiment() < 2) {
                 System.out.println("Je rentre dans l'endroit ou il le met en false");
                 territoireToChoseFromDepartFiltered.remove(territoire);
-//				peutManoeuvrer = false;
+
+            }
+            if (territoireToChoseFromDepartFiltered.isEmpty()){
+                peutManoeuvrer = false;
             }
         }
 

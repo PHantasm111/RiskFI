@@ -120,10 +120,12 @@ public class GestionBD {
     public void insererCompetition(String nomCompetition, String anneeCompetition, String dateDebut, String dateFin) {
         try {
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate(
-                    "INSERT INTO `competition`(`nomCompetition`, `anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`)  "
-                            + "VALUES ('" + nomCompetition + "','" + anneeCompetition + "',STR_TO_DATE('" + dateDebut
-                            + "', '%d/%m/%Y') ," + "'" + dateFin + "' ,'Planifiee')");
+            stmt.executeUpdate("INSERT INTO `competition` " +
+                    "(`nomCompetition`, `anneeCompetition`, `dateDebutCompetition`, `dateFinCompetition`, `etatCompetition`) " +
+                    "VALUES " +
+                    "('" + nomCompetition + "','" + anneeCompetition + "'," +
+                    "STR_TO_DATE('" + dateDebut + "', '%d/%m/%Y'), " +
+                    "STR_TO_DATE('" + dateFin + "', '%d/%m/%Y'), 'Planifiee')");
             System.out.println("Insertion terminée");
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,6 +172,23 @@ public class GestionBD {
         }
 		
 	}
+
+    public void insererActionJoueurRenforcer(int numeroManche, int numeroJoueur, String territoireCible) {
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(
+                    "INSERT INTO `actionjoueur`(`numeroManche`, `numeroJoueur`, `typeAction`, `numeroJoueurCible`,"+
+                            "`terrCible`, `terrSource`, `regimentConcerne`, `resultat`, `regimentDef`, `combinedDesAttaque`,"+
+                            "`combinedDesDefense`, `nombreRegimentsAttaqueTues`, `nombreRegimentsDefenseTues`)"+
+                            "VALUES ('" + numeroManche +"','" + numeroJoueur + "','Renforcer','" + numeroJoueur + "',"+
+                            "'"+ territoireCible + "'," + null + ","+
+                            "'"+ 1 +"',null,null,null,null,null,null)");
+            System.out.println("Insertion terminée");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 	public void fermerConnexion() {
         try {
