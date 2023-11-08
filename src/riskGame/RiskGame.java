@@ -196,19 +196,9 @@ public class RiskGame {
 	 */
 	private static void afInfoCompetition(){
 		try {
-			Statement stmt;
-			// Connection avec la db
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/si_risk";
-			Connection con = DriverManager.getConnection(url, "root", "");
-			stmt = con.createStatement();
-
-			// Execute query et récupérer les infos de Manche
-			String query ="SELECT *"
-					+ " FROM competition";
-
-			ResultSet resultat = stmt.executeQuery(query);
-
+			GestionBD gestionBD = new GestionBD();
+			ResultSet resultat = gestionBD.getInfoCompetition();
+			
 			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -243,11 +233,6 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						con.close();
-					} catch (SQLException ex) {
-						throw new RuntimeException(ex);
-					}
 					consultationGUI();
 				}
 			});
@@ -267,20 +252,8 @@ public class RiskGame {
 	 */
 	private static void afInfoTournois(){
 		try {
-			Statement stmt;
-			// Connection avec la db
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/si_risk";
-			Connection con = DriverManager.getConnection(url, "root", "");
-			stmt = con.createStatement();
-
-			// Execute query et récupérer les infos de Manche
-			String query =
-					"SELECT tournoi.*"
-							+ " FROM  tournoi, competition"
-							+ " WHERE tournoi.numeroCompetition = competition.numeroCompetition";
-
-			ResultSet resultat = stmt.executeQuery(query);
+			GestionBD gestionBD = new GestionBD();
+			ResultSet resultat = gestionBD.getInfoTournoi();
 
 			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
@@ -316,11 +289,6 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						con.close();
-					} catch (SQLException ex) {
-						throw new RuntimeException(ex);
-					}
 					consultationGUI();
 				}
 			});
@@ -340,22 +308,10 @@ public class RiskGame {
 	 */
 	private static void afInfoManche(){
 		try {
-			Statement stmt;
-			// Connection avec la db
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/si_risk";
-			Connection con = DriverManager.getConnection(url, "root", "");
-			stmt = con.createStatement();
-
-			// Execute query et récupérer les infos de Manche
-			String query =
-					"SELECT manche.numeroManche, tournoi.numeroTournoi, competition.numeroCompetition"
-							+ " FROM  tournoi, competition, manche"
-							+ " WHERE manche.numeroTournoi = tournoi.numeroTournoi"
-							+ " AND tournoi.numeroCompetition = competition.numeroCompetition";
-
-			ResultSet resultat = stmt.executeQuery(query);
-
+			GestionBD gestionBD = new GestionBD();
+			ResultSet resultat = gestionBD.getInfoManche();
+			
+			
 			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -390,11 +346,7 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						con.close();
-					} catch (SQLException ex) {
-						throw new RuntimeException(ex);
-					}
+					
 					consultationGUI();
 				}
 			});
@@ -402,6 +354,7 @@ public class RiskGame {
 			panel.add(returnButton, BorderLayout.SOUTH);
 			
 			JOptionPane.showMessageDialog(null, panel, "Table de Manche", JOptionPane.PLAIN_MESSAGE);
+			gestionBD.fermerConnexion();
 
 		} catch (Exception e) {
 			e.printStackTrace();
