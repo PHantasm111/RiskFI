@@ -636,6 +636,12 @@ public class Manche {
                 territoireDepart.supprimerRegiments(Integer.parseInt(nombreDeRegimentsADeplacer));
                 territoireArriveeManoeuvre.ajouterRegiments(Integer.parseInt(nombreDeRegimentsADeplacer));
                 this.planispherePanel.updateUI();
+                int numeroJoueur = this.planispherePanel.getJoueurEnCours().getNumeroJoueur();
+				int numeroManche = this.getNumeroManche();
+				GestionBD gestionBD = new GestionBD();
+				gestionBD.historiseDeplacement(numeroJoueur, territoireDepartString, territoireArriveeChoisi, nombreDeRegimentsADeplacer, numeroManche );
+				gestionBD.fermerConnexion();
+
             } else {
                 JOptionPane.showMessageDialog(null, "Vous avez les régiments nécessaires ! Cependant vos forces sont acculées, et ne peuvent se réfugier nulle part, il va falloir se battre...");
             }
