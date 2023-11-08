@@ -64,8 +64,32 @@ public class GestionBD {
 		}
 		
 	}
-	
-	
+
+    public ResultSet getResStaManche(int numeroManche){
+        try {
+            Statement stmt = connection.createStatement();
+            String query =
+                    "SELECT DISTINCT joueur.nomJoueur, joueur.prenomJoueur, joueur.dateNaissanceJoueur, "
+                            +"inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
+                            +"competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition "
+                            +"FROM joueur "
+                            +"LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur "
+                            +"LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche "
+                            +"LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi "
+                            +"LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition "
+                            +"WHERE manche.numeroManche = ?";
+
+            System.out.println("chercher manches de "+ " "+ numeroManche  );
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, numeroManche);
+
+            ResultSet resultat = preparedStatement.executeQuery();
+            return resultat;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public ResultSet getInfoJoueur() {
         try {
