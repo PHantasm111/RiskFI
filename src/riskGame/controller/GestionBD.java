@@ -1,21 +1,9 @@
 package riskGame.controller;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import riskGame.model.EtatJoueur;
-import riskGame.model.EtatManche;
-import riskGame.model.Joueur;
-import riskGame.model.Manche;
-import riskGame.model.TypeCouleur;
 //import riskGame.model.AbstractModel;
-import riskGame.vue.PlanispherePanel;
+
 
 public class GestionBD {
 	private Connection connection;
@@ -78,6 +66,31 @@ public class GestionBD {
 	}
 	
 	
+
+    public ResultSet getInfoJoueur() {
+        try {
+            Statement stmt = connection.createStatement();
+            String query =
+                    "SELECT DISTINCT joueur.numeroJoueur as NumJ, joueur.nomJoueur as NomJ, "
+                            +" joueur.prenomJoueur as PrenomJ, joueur.dateNaissanceJoueur, joueur.numeroEquipe, "
+                            +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
+                            +" competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition"
+                            +" FROM joueur"
+                            +" LEFT JOIN equipe ON joueur.numeroEquipe = equipe.numeroEquipe"
+                            +" LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur"
+                            +" LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche"
+                            +" LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi"
+                            +" LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition"
+                            +" ORDER BY `joueur`.`numeroJoueur` ASC";
+            ResultSet resultat = stmt.executeQuery(query);
+            return resultat;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     public void creationJoueur(String nom,String prenom,String birthday,String equipe){
         try {
