@@ -9,9 +9,6 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
@@ -20,7 +17,7 @@ import riskGame.model.Manche;
 import riskGame.model.TypeCouleur;
 //import riskGame.model.AbstractModel;
 import riskGame.vue.PlanispherePanel;
-import riskGame.vue.observer.GestionBD;
+import riskGame.controller.GestionBD;
 
 
 public class RiskGame {

@@ -1,4 +1,4 @@
-package riskGame.vue.observer;
+package riskGame.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
