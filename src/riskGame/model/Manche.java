@@ -215,7 +215,7 @@ public class Manche {
             String terrCible = null;
             String terrSource = null;
             Integer regimentConcerne = null;
-            String resultat = null; // enum('Reussi', 'Echoue')
+            String resultat = null; // enum('Reussi', 'Echoue', 'R/E')
             Integer regimentDef = null;
             // fin initialisation
 
@@ -425,9 +425,11 @@ public class Manche {
                             }
                         }
 
-                        if (nombreRegimentsDefenseTues == 1) {
+                        if ((nombreRegimentsDefenseTues == 1) && (nombreRegimentsAttaqueTues == 1)){
+                            resultat = "R/E";
+                        } else if (nombreRegimentsDefenseTues >= 1) {
                             resultat = "Reussi";
-                        } else if (nombreRegimentsAttaqueTues == 1) {
+                        } else if (nombreRegimentsAttaqueTues >= 1) {
                             resultat = "Echoue";
                         }
                     }
