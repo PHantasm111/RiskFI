@@ -81,6 +81,7 @@ public class Manche {
 			// appartient
 			if (territoire.getProprietaire().equals(joueur)) {
 				territoire.ajouterRegiments(nbrRegiment);
+				//当所有领土都被占领且这个领土属于当前玩家时，放置军队并返回true，如果这个领土不属于这个玩家则返回false
 				return true;
 			} else {
 				//si le territoire ne lui appartient pas on retourne false
@@ -96,6 +97,7 @@ public class Manche {
 			for (int j = 0; j < NOMBRE_JOUEUR; j++) {
 				//on recupere le joueur qui doit jouer
 				Joueur joueurActuel = this.planispherePanel.getJoueurEnCours();
+				//现有玩家名字nomJoueur
 
 				//booleen indiquant si le joueur a place son regiment
 				boolean placerRegiment = false;
@@ -104,7 +106,11 @@ public class Manche {
 					//on recupere le territoire selectionne et on voit si il a pu le placer
 					placerRegiment = this.placerRegimentTerritoire(joueurActuel,
 							this.planispherePanel.getTerritoireSelectionne(), 1);
-					
+
+					//pour placer regiment
+					//目标领土territoire cible 在上面这里 this.planispherePanel.getTerritoireSelectionne()
+					//军队数量regiment concerne : 1
+
 					//pour lui laisser le temps de cliquer et pour ralentir le while
 					try {
 						Thread.sleep(10);
@@ -157,6 +163,7 @@ public class Manche {
 		
 		//on fait la somme de tous les nouveaux regiments
 		int nombreAPlacer = nbrRegimentsAdd + nbrRegimentsCartes +nbrRegimentsContinent ;
+		//renforcer的新军队数量在这里
 		
 		//on met a jour la variable pour le si
 		this.planispherePanel.getJoueurEnCours().setNombreRegimentsRecuperes(nombreAPlacer
@@ -180,6 +187,7 @@ public class Manche {
 				this.planispherePanel.setaClique(false);
 				//si il a reussit a placer on decremente de 1
 				if (place) {
+					//this.planispherePanel.getTerritoireSelectionne()是要renforcer的领土的名字
 					nombreAPlacer--;
 				}
 				//on met a jour la vue
