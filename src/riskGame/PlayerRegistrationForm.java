@@ -1,5 +1,7 @@
 package riskGame;
 
+import riskGame.controller.GestionBD;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -44,38 +46,12 @@ public class PlayerRegistrationForm {
                 String prenom = prenomField.getText(); //get le text 
                 String birthday = birthdayField.getText(); //get le text
                 String equipe = equipeField.getText(); //get le text
-                // 在这里处理注册逻辑，可以将信息保存到数据库或执行其他操作
-      
-               		try {
-        			//connection a la bd
-        			Statement stmt;
-        			Class.forName("com.mysql.jdbc.Driver");
-        			String url = "jdbc:mysql://localhost:3306/si_risk";
-        			Connection con = DriverManager.getConnection(url, "root", "");
-        			stmt = con.createStatement();
 
-                    //execution de la requete
-                    String query1 = "INSERT INTO equipe (nomEquipe, etatEquipe) VALUES('" + equipe + "', 'Valide')"; //用单引号把值括起来让数据库把他当作值而不是一列
-                    stmt.executeUpdate(query1);
+                // Base de donnee
+                GestionBD gestionBD = new GestionBD();
+                gestionBD.creationJoueur(nom, prenom, birthday, equipe);
+                gestionBD.fermerConnexion();
 
-                    String query2 = "SELECT e.numeroEquipe FROM equipe e WHERE e.nomEquipe = '" + equipe + "'"; //在SQL查询中，字符串是单引号括起来的 所以这里相当于WHERE e.nomEquipe = 'equipe'
-                    ResultSet resultat = stmt.executeQuery(query2);
-                    int numeroEquipe = 0;
-                    if (resultat.next()) {
-                            // 使用 getInt() 方法来获取整数列的值
-                            numeroEquipe = resultat.getInt("numeroEquipe");
-                        }
-                    System.out.println(numeroEquipe);
-
-                    String query3 = "INSERT INTO joueur (etatJoueur, nomJoueur, prenomJoueur, dateNaissanceJoueur, numeroEquipe) VALUES " +
-                                "('VALIDE', '" + nom + "', '" + prenom + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y')" + "," + numeroEquipe +")";
-                    stmt.executeUpdate(query3);
-        		
-                	//fermer le connexion
-        			con.close();
-        		} catch (Exception e1) {
-        			e1.printStackTrace();
-        		} 
                 // 简单示例：显示注册信息
                 JOptionPane.showMessageDialog(frame, "Créé avec succès!\nNom: " + nom + "\nPrenom: " + prenom + "\nBirthday: " + birthday);
             }
@@ -99,12 +75,5 @@ public class PlayerRegistrationForm {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                PlayerRegistrationForm registrationForm = new PlayerRegistrationForm();
-                registrationForm.display();
-            }
-        });
-    }
+
 }
