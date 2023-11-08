@@ -117,27 +117,9 @@ public class RiskGame {
 	 */
 	private static void afInfoJoueur() {
 		try {
-			Statement stmt;
-			// Connection avec la db
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/si_risk";
-			Connection con = DriverManager.getConnection(url, "root", "");
-			stmt = con.createStatement();
+			GestionBD gestionBD = new GestionBD();
+			ResultSet resultat = gestionBD.getInfoJoueur();
 
-			// Execute query et récupérer les infos de joueur
-			String query = "SELECT DISTINCT joueur.numeroJoueur as NumJ, joueur.nomJoueur as NomJ, "
-						   +" joueur.prenomJoueur as PrenomJ, joueur.dateNaissanceJoueur, joueur.numeroEquipe, "
-						   +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
-						   +" competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition"
-						   +" FROM joueur"
-						   +" LEFT JOIN equipe ON joueur.numeroEquipe = equipe.numeroEquipe"
-						   +" LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur"
-						   +" LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche"
-						   +" LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi"
-						   +" LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition"
-						   +" ORDER BY `joueur`.`numeroJoueur` ASC";
-
-			ResultSet resultat = stmt.executeQuery(query);
 
 			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
@@ -173,11 +155,7 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try {
-						con.close();
-					} catch (SQLException ex) {
-						throw new RuntimeException(ex);
-					}
+
 					consultationGUI();
 				}
 			});
@@ -185,11 +163,13 @@ public class RiskGame {
 			panel.add(returnButton, BorderLayout.SOUTH);
 
 			JOptionPane.showMessageDialog(null, panel, "Table de Joueur", JOptionPane.PLAIN_MESSAGE);
+			gestionBD.fermerConnexion();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Récupère et affiche les informations sur les compétitions à partir de la base de données.
 	 * Cette méthode crée un tableau pour afficher les données des compétitions et fournit un bouton de retour
