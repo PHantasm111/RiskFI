@@ -218,8 +218,7 @@ public class Manche {
             Integer regimentDef = null;
             // fin initialisation
 
-            // modification de numeroJoueur
-            numeroJoueur = this.planispherePanel.getJoueurEnCours().getNumeroJoueur();
+
 
             // afficher les territoires possible pour lancer un attaque
             for (Territoire t : this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours())) {
@@ -247,6 +246,12 @@ public class Manche {
                 JOptionPane.showMessageDialog(null, "Vous avez annulé l'attaque");
                 attaquer();
             } else {
+
+                // modification de numeroJoueur
+                String nomJ = this.planispherePanel.getJoueurEnCours().getNomJoueur();
+                System.out.println(nomJ);
+                numeroJoueur = this.planispherePanel.getJoueurEnCours().getNumeroJoueur();
+
                 //on recupere le territoire quil a choisi
                 Territoire territoireAttaquant = null;
                 for (Territoire t : this.getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours())) {
@@ -366,12 +371,27 @@ public class Manche {
                         resultatsDesAttaque[i] = lancerUnDe();
                     }
 
+                    // changer le format de combinedDesAttaque : [1, 2, 3] -> 123
+                    int combinedDesAttaque = 0;
+                    for (int num : resultatsDesAttaque) {
+                        combinedDesAttaque = combinedDesAttaque * 10 + num;
+                    }
+
+
                     //titrage des dés défense
                     int[] resultatsDesDefense = new int[Integer.parseInt(nombreRegimentsPourDefendre)];
                     for (int j = 0; j < resultatsDesDefense.length; j++) {
                         resultatsDesDefense[j] = lancerUnDe();
 
                     }
+
+                    // changer le format de combinedDesDefense : [1, 2, 3] -> 123
+                    int combinedDesDefense = 0;
+                    for (int num : resultatsDesDefense) {
+                        combinedDesDefense = combinedDesDefense * 10 + num;
+                    }
+
+
                     //comparer les résultats des différents dés
                     //triage des tableaux
                     Arrays.sort(resultatsDesAttaque);
@@ -393,6 +413,13 @@ public class Manche {
                                 nombreRegimentsAttaqueTues++;
                             }
                         }
+
+                        if (nombreRegimentsDefenseTues == 1){
+                            resultat = "Reussi";
+                        } else if (nombreRegimentsAttaqueTues == 1){
+                            resultat = "Echoue";
+                        }
+
                     } else {
                         for (int i = 0; i <= resultatsDesDefense.length - 1; i++) {
                             if (resultatsDesAttaque[i] > resultatsDesDefense[i]) {
@@ -400,6 +427,12 @@ public class Manche {
                             } else {
                                 nombreRegimentsAttaqueTues++;
                             }
+                        }
+
+                        if (nombreRegimentsDefenseTues == 1){
+                            resultat = "Reussi";
+                        } else if (nombreRegimentsAttaqueTues == 1){
+                            resultat = "Echoue";
                         }
                     }
 
@@ -430,9 +463,31 @@ public class Manche {
                         if (mancheFinie) {
                             mettreAJourClassement(this.joueursManche.get(0));
                         }
-
                     }
+
+                    System.out.println("numeroManche: "+ numeroManche);
+                    System.out.println("numeroJoueur " + numeroJoueur);
+                    System.out.println("numeroJoueurCible "+ numeroJoueurCible);
+                    System.out.println("typeAction " + typeAction);
+                    System.out.println("terrCible " + terrCible);
+                    System.out.println("terrSource :"+ terrSource);
+                    System.out.println("regimentConcerne " + regimentConcerne);
+                    System.out.println("resultat " + resultat);
+                    System.out.println("regimentDef " + regimentDef);
+                    System.out.println("CDA " + combinedDesAttaque);
+                    System.out.println("CDD" +combinedDesDefense);
+
                 }
+
+                /*Integer numeroManche = this.numeroManche; // Integer peut stocker comme null
+                Integer numeroJoueur = null;
+                String typeAction = "Attaquer"; // enum('Attaquer', 'Renforcer', 'Deplacer')
+                Integer numeroJoueurCible = null;
+                String terrCible = null;
+                String terrSource = null;
+                Integer regimentConcerne = null;
+                String resultat = null; // enum('Reussi', 'Echoue')
+                Integer regimentDef = null;*/
 
 
                 if (checkPeutAttaquer()) {
@@ -446,6 +501,7 @@ public class Manche {
 
         }
     }
+
 
     private boolean checkPeutAttaquer() {
         ArrayList<Territoire> territoiresJoueurEnCours = getListeTerritoiresPourUnJoueur(this.planispherePanel.getJoueurEnCours());
