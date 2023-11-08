@@ -46,6 +46,25 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
+
+	public void historiseDeplacement(int numeroJoueur, String territoireDepartString, String territoireArriveeChoisi,
+			String nombreDeRegimentsADeplacer, int numeroManche) {
+		try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(
+                    "INSERT INTO `actionjoueur`(`numeroManche`, `numeroJoueur`, `typeAction`, `numeroJoueurCible`,"+
+                    "`terrCible`, `terrSource`, `regimentConcerne`, `resultat`, `regimentDef`, `combinedDesAttaque`,"+
+                    "`combinedDesDefense`, `nombreRegimentsAttaqueTues`, `nombreRegimentsDefenseTues`)"+
+                    "VALUES ('" + numeroManche +"','" + numeroJoueur + "','Deplacer','" + numeroJoueur + "',"+
+                    "'"+ territoireArriveeChoisi + "','" + territoireDepartString + "',"+
+                    "'"+ nombreDeRegimentsADeplacer +"',null,null,null,null,null,null)");
+            System.out.println("Insertion terminée");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+	}
+	
 	
 	public void fermerConnexion() {
         try {
@@ -56,7 +75,6 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-	
 	
 	
 }	
