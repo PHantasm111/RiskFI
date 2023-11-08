@@ -1,11 +1,11 @@
 package riskGame;
 
+import riskGame.controller.GestionBD;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import riskGame.controller.GestionBD;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -73,9 +73,7 @@ public class PlayerRegistrationForm {
 
     public void display() {
         frame.setVisible(true);
-        System.out.println("Joueur a bien cree");
     }
-
 
 
 }
