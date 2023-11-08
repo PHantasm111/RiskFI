@@ -39,11 +39,9 @@ public class ChercherMancheJoueur {
         JButton ChercherButton = new JButton("Chercher");
         JButton returnButton = new JButton("Afficher menu consultation");
 
-
         Box buttonBox = Box.createVerticalBox();
         buttonBox.add(ChercherButton);
         buttonBox.add(returnButton);
-
 
         JLabel messageLabel = new JLabel();
         messageLabel.setForeground(Color.RED);
@@ -53,7 +51,6 @@ public class ChercherMancheJoueur {
                 String nom = nomField.getText();
                 String prenom = prenomField.getText();
 
-                // 清空消息
                 messageLabel.setText("");
 
                 // Base de donnees
