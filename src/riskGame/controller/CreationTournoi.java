@@ -1,4 +1,4 @@
-package riskGame;
+package riskGame.controller;
 
 import riskGame.controller.GestionBD;
 
