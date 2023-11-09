@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class CreationTournoi {
 
@@ -32,8 +33,19 @@ public class CreationTournoi {
         JLabel dateFinLabel = new JLabel("Date de fin:"); //creation de label
         dateFinField = new JTextField(20); //set la taille de label
 
-        JLabel numeroCompetitionLabel = new JLabel("Numero de la competition:"); //creation de label
-        numeroCompetitionField = new JTextField(20); //set la taille de label
+
+        JLabel numeroCompetitionLabel = new JLabel("Numero de la competition:");
+        JComboBox<Integer> comboNumeroField = new JComboBox<>();
+        GestionBD gestionBD = new GestionBD();
+        ArrayList<Integer> listNumeroCompetition = new ArrayList<Integer>();
+        listNumeroCompetition = gestionBD.chercherNumCompetition();
+        gestionBD.fermerConnexion();
+        for(int numero : listNumeroCompetition){
+            comboNumeroField.addItem(numero);
+        }
+
+
+
 
 
 
@@ -44,13 +56,14 @@ public class CreationTournoi {
                 String numeroOrdre = numeroOrdreField.getText(); //get le text
                 String dateDebut = dateDebutField.getText(); //get le text
                 String dateFin = dateFinField.getText(); //get le text
-                String numeroCompetition = numeroCompetitionField.getText(); //get le text
+                int numeroCompetition = (int) comboNumeroField.getSelectedItem(); //get le text
+
                 int numeroOrdreInt = Integer.parseInt(numeroOrdre);
-                int numeroCompetitionInt = Integer.parseInt(numeroCompetition);
+
 
                 // Base de donnee
                 GestionBD gestionBD = new GestionBD();
-                gestionBD.creationTournoi(numeroOrdreInt, dateDebut, dateFin, numeroCompetitionInt);
+                gestionBD.creationTournoi(numeroOrdreInt, dateDebut, dateFin, numeroCompetition);
                 gestionBD.fermerConnexion();
 
                 // 简单示例：显示注册信息
@@ -64,8 +77,9 @@ public class CreationTournoi {
         panel.add(dateDebutField); //ajouter dateDebutField a panel
         panel.add(dateFinLabel);  //ajouter DateDeNaissanceLabel a panel
         panel.add(dateFinField); //ajouter dateFinField a panel
-        panel.add(numeroCompetitionLabel);  //ajouter DateDeNaissanceLabel a panel
-        panel.add(numeroCompetitionField); //ajouter dateFinField a panel
+        panel.add(numeroCompetitionLabel);
+        panel.add(comboNumeroField);
+
 
 
         panel.add(new JLabel()); // ajouter un label vide

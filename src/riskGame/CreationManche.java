@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class CreationManche {
     private JFrame frame; //Creation de frame
@@ -15,13 +16,22 @@ public class CreationManche {
     public CreationManche() {
         frame = new JFrame("Creation de manche"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
-        frame.setSize(400, 300); //set la taille de frame
+        frame.setSize(300, 200); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
-        panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
+        panel.setLayout(new GridLayout(3, 2)); //set la taille de la structure de dialogue
 
-        JLabel numeroTournoiLabel = new JLabel("Numero de tournoi:"); //creation de label
-        numeroTournoiField = new JTextField(20); //set la taille de label
+
+        JLabel numeroTournoiLabel = new JLabel("Numero de tournoi:");
+        JComboBox<Integer> comboTournoiField = new JComboBox<>();
+
+        GestionBD gestionBD = new GestionBD();
+        ArrayList<Integer> listNumeroTournoi = new ArrayList<Integer>();
+        listNumeroTournoi = gestionBD.chercherNumTournoi();
+        gestionBD.fermerConnexion();
+        for(int numero : listNumeroTournoi){
+            comboTournoiField.addItem(numero);
+        }
 
 
 
@@ -30,13 +40,13 @@ public class CreationManche {
         enregistrerButton.addActionListener(new ActionListener() { //set la fonction en cliquant le bouton
 
             public void actionPerformed(ActionEvent e) {
-                String numeroTournoi = numeroTournoiField.getText(); //get le text
 
-                int numeroTournoiInt = Integer.parseInt(numeroTournoi);
+                int numeroTournoi = (int) comboTournoiField.getSelectedItem(); //get le text
+
 
                 // Base de donnee
                 GestionBD gestionBD = new GestionBD();
-                gestionBD.creationManche(numeroTournoiInt);
+                gestionBD.creationManche(numeroTournoi);
                 gestionBD.fermerConnexion();
 
                 // 简单示例：显示注册信息
@@ -44,8 +54,8 @@ public class CreationManche {
             }
         });
 
-        panel.add(numeroTournoiLabel); //ajouter numeroOrdreLabel a panel
-        panel.add(numeroTournoiField); //ajouter nomfield a panel
+        panel.add(numeroTournoiLabel);
+        panel.add(comboTournoiField);
 
 
         panel.add(new JLabel()); // ajouter un label vide
