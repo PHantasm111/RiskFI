@@ -25,7 +25,7 @@ public class CreationTournoi {
         frame.setSize(400, 400); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
-        panel.setLayout(new GridLayout(6, 2)); //set la taille de la structure de dialogue
+        panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
 
         JLabel numeroOrdreLabel = new JLabel("Numero d'ordre:"); //creation de label
         numeroOrdreField = new JTextField(20); //set la taille de label
