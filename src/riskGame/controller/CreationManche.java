@@ -16,18 +16,17 @@ public class CreationManche {
     public CreationManche() {
         frame = new JFrame("Creation de manche"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
-        frame.setSize(300, 200); //set la taille de frame
+        frame.setSize(325, 200); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
-        panel.setLayout(new GridLayout(3, 2)); //set la taille de la structure de dialogue
+        panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
 
 
         JLabel numeroTournoiLabel = new JLabel("Numero de tournoi:");
         JComboBox<Integer> comboTournoiField = new JComboBox<>();
 
         GestionBD gestionBD = new GestionBD();
-        ArrayList<Integer> listNumeroTournoi = new ArrayList<Integer>();
-        listNumeroTournoi = gestionBD.chercherNumTournoi();
+        ArrayList<Integer> listNumeroTournoi = gestionBD.chercherNumTournoi();
         gestionBD.fermerConnexion();
         for(int numero : listNumeroTournoi){
             comboTournoiField.addItem(numero);
@@ -54,12 +53,22 @@ public class CreationManche {
             }
         });
 
+        JButton runCreationGUIButton = new JButton("Return"); // Ajout du bouton
+        runCreationGUIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainMenu.creationGUI(); // 运行 creationGUI() 方法
+            }
+        });
+
         panel.add(numeroTournoiLabel);
         panel.add(comboTournoiField);
 
 
         panel.add(new JLabel()); // ajouter un label vide
         panel.add(enregistrerButton); //ajouter le bouton enregistrer
+
+        panel.add(runCreationGUIButton); // Ajout du bouton "Run creationGUI()"
 
         frame.add(panel); //ajouter le panel dans le frame panel:对话框 frame：框架
     }
