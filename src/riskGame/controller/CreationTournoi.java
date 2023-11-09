@@ -1,5 +1,6 @@
 package riskGame.controller;
 
+import riskGame.RiskGame;
 import riskGame.controller.GestionBD;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class CreationTournoi {
     public CreationTournoi() {
         frame = new JFrame("Creation de tournoi"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
-        frame.setSize(400, 300); //set la taille de frame
+        frame.setSize(600, 500); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
         panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
@@ -70,6 +71,13 @@ public class CreationTournoi {
                 JOptionPane.showMessageDialog(frame, "Créé avec succès!\nNumero d'ordre: " + numeroOrdre + "\nDate de debut: " + dateDebut + "\nDate de fin: " + dateFin + "\nNumero de la competition: " + numeroCompetition);
             }
         });
+        JButton runCreationGUIButton = new JButton("Return"); // Ajout du bouton
+        runCreationGUIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RiskGame.creationGUI(); // 运行 creationGUI() 方法
+            }
+        });
 
         panel.add(numeroOrdreLabel); //ajouter numeroOrdreLabel a panel
         panel.add(numeroOrdreField); //ajouter nomfield a panel
@@ -79,6 +87,7 @@ public class CreationTournoi {
         panel.add(dateFinField); //ajouter dateFinField a panel
         panel.add(numeroCompetitionLabel);
         panel.add(comboNumeroField);
+        panel.add(runCreationGUIButton); // Ajout du bouton "Run creationGUI()"
 
 
 
