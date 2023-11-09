@@ -19,7 +19,7 @@ public class CreationManche {
         frame.setSize(300, 200); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
-        panel.setLayout(new GridLayout(4, 2)); //set la taille de la structure de dialogue
+        panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
 
         JLabel numeroTournoiLabel = new JLabel("Numero de tournoi:");
         JComboBox<Integer> comboTournoiField = new JComboBox<>();
