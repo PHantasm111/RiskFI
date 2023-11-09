@@ -91,7 +91,7 @@ public class MainMenu {
 
 
 
-    private static void creationGUI(){
+    public static void creationGUI(){
         String[] optionsToChoose = { "Création de Joueur", "Création de compétition", "Création de tournoi", "Création de manche"};
 
         int choice = JOptionPane.showOptionDialog(null,

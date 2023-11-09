@@ -39,6 +39,13 @@ public class AjouterCompetation {
 
         // Création d'un panneau pour organiser les composants
         JPanel panel = new JPanel(new GridLayout(5, 2));
+        JButton runCreationGUIButton = new JButton("Return"); // Ajout du bouton
+        runCreationGUIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainMenu.creationGUI(); // 运行 creationGUI() 方法
+            }
+        });
 
         panel.add(nomLabel);
         panel.add(nomField);
@@ -49,8 +56,10 @@ public class AjouterCompetation {
         panel.add(debField);
         panel.add(finLabel);
         panel.add(finField);
-        panel.add(new JLabel()); // Espace vide
+        panel.add(runCreationGUIButton); // Ajout du bouton "Run creationGUI()"
         panel.add(creerButton);
+
+
 
         //Ajout du panneau à la fenêtre
         frame.getContentPane().add(panel);
@@ -75,7 +84,7 @@ public class AjouterCompetation {
             }
         });
 
-        frame.setSize(300, 200);
+        frame.setSize(450, 250);
         frame.setVisible(true);
     }
 }

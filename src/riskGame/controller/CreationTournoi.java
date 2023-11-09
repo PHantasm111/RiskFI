@@ -1,5 +1,6 @@
 package riskGame.controller;
 
+import com.sun.tools.javac.Main;
 import riskGame.controller.GestionBD;
 
 import javax.swing.*;
@@ -7,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import riskGame.controller.MainMenu;
+
 
 public class CreationTournoi {
 
@@ -19,10 +22,10 @@ public class CreationTournoi {
     public CreationTournoi() {
         frame = new JFrame("Creation de tournoi"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
-        frame.setSize(400, 300); //set la taille de frame
+        frame.setSize(400, 400); //set la taille de frame
 
         JPanel panel = new JPanel(); //Creation la structure de dialogue
-        panel.setLayout(new GridLayout(5, 2)); //set la taille de la structure de dialogue
+        panel.setLayout(new GridLayout(6, 2)); //set la taille de la structure de dialogue
 
         JLabel numeroOrdreLabel = new JLabel("Numero d'ordre:"); //creation de label
         numeroOrdreField = new JTextField(20); //set la taille de label
@@ -43,10 +46,6 @@ public class CreationTournoi {
         for(int numero : listNumeroCompetition){
             comboNumeroField.addItem(numero);
         }
-
-
-
-
 
 
         JButton enregistrerButton = new JButton("Enregistrer"); //creation de button
@@ -71,6 +70,14 @@ public class CreationTournoi {
             }
         });
 
+        JButton runCreationGUIButton = new JButton("Return"); // Ajout du bouton
+        runCreationGUIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainMenu.creationGUI(); // 运行 creationGUI() 方法
+            }
+        });
+
         panel.add(numeroOrdreLabel); //ajouter numeroOrdreLabel a panel
         panel.add(numeroOrdreField); //ajouter nomfield a panel
         panel.add(dateDebutLabel); //ajouter prenomlabel a panel
@@ -79,10 +86,12 @@ public class CreationTournoi {
         panel.add(dateFinField); //ajouter dateFinField a panel
         panel.add(numeroCompetitionLabel);
         panel.add(comboNumeroField);
+        panel.add(runCreationGUIButton); // Ajout du bouton "Run creationGUI()"
 
 
 
-        panel.add(new JLabel()); // ajouter un label vide
+
+//        panel.add(new JLabel()); // ajouter un label vide
         panel.add(enregistrerButton); //ajouter le bouton enregistrer
 
         frame.add(panel); //ajouter le panel dans le frame panel:对话框 frame：框架

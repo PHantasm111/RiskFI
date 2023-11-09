@@ -57,6 +57,14 @@ public class PlayerRegistrationForm {
             }
         });
 
+        JButton runCreationGUIButton = new JButton("Return"); // Ajout du bouton
+        runCreationGUIButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainMenu.creationGUI(); // 运行 creationGUI() 方法
+            }
+        });
+
         panel.add(nomLabel); //ajouter nomlabel a panel
         panel.add(nomField); //ajouter nomfield a panel
         panel.add(prenomLabel); //ajouter prenomlabel a panel
@@ -65,7 +73,7 @@ public class PlayerRegistrationForm {
         panel.add(birthdayField); //ajouter birthdayField a panel
         panel.add(equipeLabel);  //ajouter DateDeNaissanceLabel a panel
         panel.add(equipeField); //ajouter birthdayField a panel
-        panel.add(new JLabel()); // ajouter un label vide
+        panel.add(runCreationGUIButton); // Ajout du bouton "Run creationGUI()"
         panel.add(enregistrerButton); //ajouter le bouton enregistrer
 
         frame.add(panel); //ajouter le panel dans le frame panel:对话框 frame：框架
