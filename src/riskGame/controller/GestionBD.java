@@ -224,6 +224,67 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
+    
+    public ResultSet getListeSelectManche() {
+    	try {
+    		Statement stmt;
+    		stmt = connection.createStatement();
+			ResultSet resultat = stmt.executeQuery("SELECT Manche.numeroManche, Manche.etatManche, COUNT(Inscrire.numeroJoueur) AS nombreJoueursInscrits\r\n"
+					+ "FROM Manche\r\n"
+					+ "LEFT JOIN Inscrire ON Manche.numeroManche = Inscrire.numeroManche\r\n"
+					+ "GROUP BY Manche.numeroManche, Manche.etatManche\r\n"
+					+ "HAVING COUNT(Inscrire.numeroJoueur) < 5;");
+			return resultat;
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    }
+    
+    public ResultSet getListeSelectJoueur(String manchenum) {
+    	try {
+    		Statement stmt;
+			stmt = connection.createStatement();
+			ResultSet resultat = stmt.executeQuery("SELECT Joueur.nomJoueur, Joueur.prenomJoueur, Joueur.etatJoueur, Joueur.numeroJoueur\r\n"
+					+ "FROM Joueur\r\n"
+					+ "LEFT JOIN Inscrire ON Joueur.numeroJoueur = Inscrire.numeroJoueur AND Inscrire.numeroManche = "+manchenum+"\r\n"
+					+ "WHERE Inscrire.numeroJoueur IS NULL;\r\n"
+					+ "");
+			return resultat;
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    }
+    
+    public void insertPlayerIntoInscrire(int playerID, String mancheNum) {
+    	try {
+	        Statement stmt = connection.createStatement();
+	        stmt.executeUpdate("INSERT INTO inscrire (numeroJoueur, numeroManche) VALUES (" + playerID + ", " + mancheNum + ")");
+	        System.out.println("Inscription réussie.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+    }
+    
+    public ResultSet getNbInscritInManche(String manchenum) {
+    	try {
+    		Statement stmt;
+			stmt = connection.createStatement();
+			ResultSet resultat = stmt.executeQuery("SELECT Manche.numeroManche, COUNT(Inscrire.numeroJoueur) AS nombreJoueursInscrits\r\n"
+					+ "FROM Manche\r\n"
+					+ "LEFT JOIN Inscrire ON Manche.numeroManche = Inscrire.numeroManche\r\n"
+					+"WHERE Manche.numeroManche='"+manchenum+"'\r\n"
+					+ "GROUP BY Manche.numeroManche \r\n");
+			return resultat;
+    	}
+    	catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+    }
 
     public void insererActionJoueurAttaquer(Integer numeroManche, Integer numeroJoueur, String typeAction, Integer numeroJoueurCible,
                                 String terrCible, String terrSource, Integer regimentConcerne, String resultat, Integer regimentDef,
