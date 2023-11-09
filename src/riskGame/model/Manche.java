@@ -309,196 +309,204 @@ public class Manche {
 
                 //on lui demande qui veut attaquer
 
-                String territoireAAttaquerString = (String) JOptionPane.showInputDialog(null,
-                        "Quel territoire souhaitez-vous attaquer? ", "Choix des territoires à attaquer: ",
-                        JOptionPane.PLAIN_MESSAGE, null, territoireToAttack, territoireToAttack[0]);
-                if (territoireAAttaquerString == null) {
-                    //sil annule l attaque
-                    JOptionPane.showMessageDialog(null, "Vous avez annulé l'attaque.");
+                if (territoireToAttack.length == 0){
+                    //si il y a pas des territoire to attack
+                    JOptionPane.showMessageDialog(null, "il y a pas de territoire pour attaquer.");
                     attaquer();
-
                 } else {
-                    //si il choisi un territoire
-                    Territoire territoireDefendant = null;
-                    for (Territoire territoireListe : this.planispherePanel.getTerritoires()) {
-                        if (territoireListe.getNomTerritoire().equals(territoireAAttaquerString)) {
-                            territoireDefendant = territoireListe;
+                    String territoireAAttaquerString = (String) JOptionPane.showInputDialog(null,
+                            "Quel territoire souhaitez-vous attaquer? ", "Choix des territoires à attaquer: ",
+                            JOptionPane.PLAIN_MESSAGE, null, territoireToAttack, territoireToAttack[0]);
+                    if (territoireAAttaquerString == null) {
+                        //sil annule l attaque
+                        JOptionPane.showMessageDialog(null, "Vous avez annulé l'attaque.");
+                        attaquer();
+
+                    } else {
+                        //si il choisi un territoire
+                        Territoire territoireDefendant = null;
+                        for (Territoire territoireListe : this.planispherePanel.getTerritoires()) {
+                            if (territoireListe.getNomTerritoire().equals(territoireAAttaquerString)) {
+                                territoireDefendant = territoireListe;
+                            }
                         }
-                    }
-                    // on a territoireAttant et
+                        // on a territoireAttant et
 
-                    // modification de terrCible
-                    terrCible = territoireDefendant.getNomTerritoire();
+                        // modification de terrCible
+                        terrCible = territoireDefendant.getNomTerritoire();
 
-                    // modification de numeroJoueurCible
-                    numeroJoueurCible = territoireDefendant.getProprietaire().getNumeroJoueur();
-
-
-                    // choisir nbr regiment attaquant
-                    String[] optionsToChoseFrom;
-                    if (territoireAttaquant.getNbrRegiment() == 2) {
-                        String[] options = {"1"};
-                        optionsToChoseFrom = options;
-                    } else if (territoireAttaquant.getNbrRegiment() == 3) {
-                        String[] options = {"1", "2"};
-                        optionsToChoseFrom = options;
-
-                    } else {
-                        String[] options = {"1", "2", "3"};
-                        optionsToChoseFrom = options;
-
-                    }
-
-                    // choisir nbr regiment defense
-
-                    String[] optionsToChoseFromDefense;
-                    if (territoireDefendant.getNbrRegiment() >= 2) {
-                        String[] options = {"1", "2"};
-                        optionsToChoseFromDefense = options;
-                    } else {
-                        String[] options = {"1"};
-                        optionsToChoseFromDefense = options;
-                    }
+                        // modification de numeroJoueurCible
+                        numeroJoueurCible = territoireDefendant.getProprietaire().getNumeroJoueur();
 
 
-                    // le joueur peut attaquer avec 1,2 ou 3 régiments
-                    String nombreRegimentsPourAttaquer = (String) JOptionPane.showInputDialog(null,
-                            "Combien de régiments souhaitez-vous déplacer pour l'attaque? ",
-                            "Choix du nb régiments attaque: ", JOptionPane.PLAIN_MESSAGE, null, optionsToChoseFrom, optionsToChoseFrom[0]);
+                        // choisir nbr regiment attaquant
+                        String[] optionsToChoseFrom;
+                        if (territoireAttaquant.getNbrRegiment() == 2) {
+                            String[] options = {"1"};
+                            optionsToChoseFrom = options;
+                        } else if (territoireAttaquant.getNbrRegiment() == 3) {
+                            String[] options = {"1", "2"};
+                            optionsToChoseFrom = options;
 
-                    regimentConcerne = Integer.valueOf(nombreRegimentsPourAttaquer);
+                        } else {
+                            String[] options = {"1", "2", "3"};
+                            optionsToChoseFrom = options;
+
+                        }
+
+                        // choisir nbr regiment defense
+
+                        String[] optionsToChoseFromDefense;
+                        if (territoireDefendant.getNbrRegiment() >= 2) {
+                            String[] options = {"1", "2"};
+                            optionsToChoseFromDefense = options;
+                        } else {
+                            String[] options = {"1"};
+                            optionsToChoseFromDefense = options;
+                        }
 
 
-                    String nombreRegimentsPourDefendre = (String) JOptionPane.showInputDialog(null,
-                            "[ " + territoireDefendant.getProprietaire().getPrenomJoueur() + "Tu te fais attaquer ]\n Avec combien de régiments souhaitez-vous défendre ?",
-                            "Choix du nombre de régiments pour la défense: ", JOptionPane.PLAIN_MESSAGE, null, optionsToChoseFromDefense, optionsToChoseFromDefense[0]);
+                        // le joueur peut attaquer avec 1,2 ou 3 régiments
+                        String nombreRegimentsPourAttaquer = (String) JOptionPane.showInputDialog(null,
+                                "Combien de régiments souhaitez-vous déplacer pour l'attaque? ",
+                                "Choix du nb régiments attaque: ", JOptionPane.PLAIN_MESSAGE, null, optionsToChoseFrom, optionsToChoseFrom[0]);
 
-                    regimentDef = Integer.valueOf(nombreRegimentsPourDefendre);
-
-                    JOptionPane.showMessageDialog(null, "Resultats des choix pour la bagarre: \nL'attaquant attaque avec: " + nombreRegimentsPourAttaquer + "\nLe defenseur defend avec:" + nombreRegimentsPourDefendre);
+                        regimentConcerne = Integer.valueOf(nombreRegimentsPourAttaquer);
 
 
-                    // lancer les des
+                        String nombreRegimentsPourDefendre = (String) JOptionPane.showInputDialog(null,
+                                "[ " + territoireDefendant.getProprietaire().getPrenomJoueur() + "Tu te fais attaquer ]\n Avec combien de régiments souhaitez-vous défendre ?",
+                                "Choix du nombre de régiments pour la défense: ", JOptionPane.PLAIN_MESSAGE, null, optionsToChoseFromDefense, optionsToChoseFromDefense[0]);
 
-                    //titrage des dés attaque
-                    int[] resultatsDesAttaque = new int[Integer.parseInt(nombreRegimentsPourAttaquer)];
-                    for (int i = 0; i < resultatsDesAttaque.length; i++) {
-                        resultatsDesAttaque[i] = lancerUnDe();
-                    }
+                        regimentDef = Integer.valueOf(nombreRegimentsPourDefendre);
 
-                    //titrage des dés défense
-                    int[] resultatsDesDefense = new int[Integer.parseInt(nombreRegimentsPourDefendre)];
-                    for (int j = 0; j < resultatsDesDefense.length; j++) {
-                        resultatsDesDefense[j] = lancerUnDe();
+                        JOptionPane.showMessageDialog(null, "Resultats des choix pour la bagarre: \nL'attaquant attaque avec: " + nombreRegimentsPourAttaquer + "\nLe defenseur defend avec:" + nombreRegimentsPourDefendre);
 
-                    }
 
-                    //comparer les résultats des différents dés
-                    //triage des tableaux
-                    Arrays.sort(resultatsDesAttaque);
-                    reverse(resultatsDesAttaque);
+                        // lancer les des
 
-                    Arrays.sort(resultatsDesDefense);
-                    reverse(resultatsDesDefense);
+                        //titrage des dés attaque
+                        int[] resultatsDesAttaque = new int[Integer.parseInt(nombreRegimentsPourAttaquer)];
+                        for (int i = 0; i < resultatsDesAttaque.length; i++) {
+                            resultatsDesAttaque[i] = lancerUnDe();
+                        }
 
-                    // changer le format de combinedDesAttaque : [1, 2, 3] -> 123
-                    int combinedDesAttaque = 0;
-                    for (int num : resultatsDesAttaque) {
-                        combinedDesAttaque = combinedDesAttaque * 10 + num;
-                    }
+                        //titrage des dés défense
+                        int[] resultatsDesDefense = new int[Integer.parseInt(nombreRegimentsPourDefendre)];
+                        for (int j = 0; j < resultatsDesDefense.length; j++) {
+                            resultatsDesDefense[j] = lancerUnDe();
 
-                    // changer le format de combinedDesDefense : [1, 2, 3] -> 123
-                    int combinedDesDefense = 0;
-                    for (int num : resultatsDesDefense) {
-                        combinedDesDefense = combinedDesDefense * 10 + num;
-                    }
+                        }
 
-                    //comparer les duos de des (cf regles du jeu)
-                    int nombreRegimentsDefenseTues = 0;
-                    int nombreRegimentsAttaqueTues = 0;
+                        //comparer les résultats des différents dés
+                        //triage des tableaux
+                        Arrays.sort(resultatsDesAttaque);
+                        reverse(resultatsDesAttaque);
 
-                    //on elimine les regiments qd le duel est perdu
-                    if (resultatsDesDefense.length > resultatsDesAttaque.length) {
-                        for (int i = 0; i <= resultatsDesAttaque.length - 1; i++) {
-                            if (resultatsDesAttaque[i] > resultatsDesDefense[i]) {
-                                nombreRegimentsDefenseTues++;
-                            } else {
-                                nombreRegimentsAttaqueTues++;
+                        Arrays.sort(resultatsDesDefense);
+                        reverse(resultatsDesDefense);
+
+                        // changer le format de combinedDesAttaque : [1, 2, 3] -> 123
+                        int combinedDesAttaque = 0;
+                        for (int num : resultatsDesAttaque) {
+                            combinedDesAttaque = combinedDesAttaque * 10 + num;
+                        }
+
+                        // changer le format de combinedDesDefense : [1, 2, 3] -> 123
+                        int combinedDesDefense = 0;
+                        for (int num : resultatsDesDefense) {
+                            combinedDesDefense = combinedDesDefense * 10 + num;
+                        }
+
+                        //comparer les duos de des (cf regles du jeu)
+                        int nombreRegimentsDefenseTues = 0;
+                        int nombreRegimentsAttaqueTues = 0;
+
+                        //on elimine les regiments qd le duel est perdu
+                        if (resultatsDesDefense.length > resultatsDesAttaque.length) {
+                            for (int i = 0; i <= resultatsDesAttaque.length - 1; i++) {
+                                if (resultatsDesAttaque[i] > resultatsDesDefense[i]) {
+                                    nombreRegimentsDefenseTues++;
+                                } else {
+                                    nombreRegimentsAttaqueTues++;
+                                }
+                            }
+
+                            if (nombreRegimentsDefenseTues == 1) {
+                                resultat = "Reussi";
+                            } else if (nombreRegimentsAttaqueTues == 1) {
+                                resultat = "Echoue";
+                            }
+
+                        } else {
+                            for (int i = 0; i <= resultatsDesDefense.length - 1; i++) {
+                                if (resultatsDesAttaque[i] > resultatsDesDefense[i]) {
+                                    nombreRegimentsDefenseTues++;
+                                } else {
+                                    nombreRegimentsAttaqueTues++;
+                                }
+                            }
+
+                            if ((nombreRegimentsDefenseTues == 1) && (nombreRegimentsAttaqueTues == 1)){
+                                resultat = "R/E";
+                            } else if (nombreRegimentsDefenseTues >= 1) {
+                                resultat = "Reussi";
+                            } else if (nombreRegimentsAttaqueTues >= 1) {
+                                resultat = "Echoue";
                             }
                         }
 
-                        if (nombreRegimentsDefenseTues == 1) {
-                            resultat = "Reussi";
-                        } else if (nombreRegimentsAttaqueTues == 1) {
-                            resultat = "Echoue";
-                        }
+                        String resultatDesDefenseString = arrayToString(resultatsDesDefense);
+                        String resultatDesAttaqueString = arrayToString(resultatsDesAttaque);
 
-                    } else {
-                        for (int i = 0; i <= resultatsDesDefense.length - 1; i++) {
-                            if (resultatsDesAttaque[i] > resultatsDesDefense[i]) {
-                                nombreRegimentsDefenseTues++;
-                            } else {
-                                nombreRegimentsAttaqueTues++;
+                        //affichaqge au joueur du lancer des dés et des résultats de l'attaque
+                        JOptionPane.showMessageDialog(null, "Résultat de l'attaque: \nLancers de dés de l'attaquant: " + resultatDesAttaqueString + "\n"
+                                                            + "Lancers de dés du défenseur: " + resultatDesDefenseString + "\n" +
+                                                            "Bilan des morts:\n " + "Morts attaquants: " + nombreRegimentsAttaqueTues + "\nMorts défenseurs: " + nombreRegimentsDefenseTues);
+
+                        // supprimer les regiments
+                        territoireAttaquant.supprimerRegiments(nombreRegimentsAttaqueTues);
+                        territoireDefendant.supprimerRegiments(nombreRegimentsDefenseTues);
+                        this.planispherePanel.updateUI();
+                        //regarder si on bute tous les marcs du territoire qui defend, si oui, il faut que l'on trigger le changemen
+                        //de propriétaire et la récupération de cartes
+                        // recuperer carte si je gagne un territoire
+
+                        if (territoireDefendant.getNbrRegiment() == 0) {
+                            Joueur joueurDef = territoireDefendant.getProprietaire();
+                            territoireDefendant.setProprietaire(territoireAttaquant.getProprietaire());
+                            territoireDefendant.setNbrRegiment(Integer.parseInt(nombreRegimentsPourAttaquer));
+                            territoireAttaquant.setNbrRegiment(territoireAttaquant.getNbrRegiment() - Integer.parseInt(nombreRegimentsPourAttaquer));
+                            donnerCarteJoueur();
+                            eliminerJoueur(joueurDef);
+                            this.mancheFinie = verifierFinPartie();
+                            if (mancheFinie) {
+                                mettreAJourClassement(this.joueursManche.get(0));
                             }
                         }
 
-                        if ((nombreRegimentsDefenseTues == 1) && (nombreRegimentsAttaqueTues == 1)){
-                            resultat = "R/E";
-                        } else if (nombreRegimentsDefenseTues >= 1) {
-                            resultat = "Reussi";
-                        } else if (nombreRegimentsAttaqueTues >= 1) {
-                            resultat = "Echoue";
-                        }
+                        System.out.println("numeroManche: " + numeroManche);
+                        System.out.println("numeroJoueur " + numeroJoueur);
+                        System.out.println("numeroJoueurCible " + numeroJoueurCible);
+                        System.out.println("typeAction " + typeAction);
+                        System.out.println("terrCible " + terrCible);
+                        System.out.println("terrSource :" + terrSource);
+                        System.out.println("regimentConcerne " + regimentConcerne);
+                        System.out.println("resultat " + resultat);
+                        System.out.println("regimentDef " + regimentDef);
+                        System.out.println("CDA " + combinedDesAttaque);
+                        System.out.println("CDD " + combinedDesDefense);
+
+                        GestionBD gestionBD = new GestionBD();
+                        gestionBD.insererActionJoueurAttaquer(numeroManche,numeroJoueur,typeAction,numeroJoueurCible,
+                                terrCible,terrSource,regimentConcerne,resultat,regimentDef,combinedDesAttaque,
+                                combinedDesDefense,nombreRegimentsAttaqueTues,nombreRegimentsDefenseTues);
+                        gestionBD.fermerConnexion();
+
                     }
-
-                    String resultatDesDefenseString = arrayToString(resultatsDesDefense);
-                    String resultatDesAttaqueString = arrayToString(resultatsDesAttaque);
-
-                    //affichaqge au joueur du lancer des dés et des résultats de l'attaque
-                    JOptionPane.showMessageDialog(null, "Résultat de l'attaque: \nLancers de dés de l'attaquant: " + resultatDesAttaqueString + "\n"
-                                                        + "Lancers de dés du défenseur: " + resultatDesDefenseString + "\n" +
-                                                        "Bilan des morts:\n " + "Morts attaquants: " + nombreRegimentsAttaqueTues + "\nMorts défenseurs: " + nombreRegimentsDefenseTues);
-
-                    // supprimer les regiments
-                    territoireAttaquant.supprimerRegiments(nombreRegimentsAttaqueTues);
-                    territoireDefendant.supprimerRegiments(nombreRegimentsDefenseTues);
-                    this.planispherePanel.updateUI();
-                    //regarder si on bute tous les marcs du territoire qui defend, si oui, il faut que l'on trigger le changemen
-                    //de propriétaire et la récupération de cartes
-                    // recuperer carte si je gagne un territoire
-
-                    if (territoireDefendant.getNbrRegiment() == 0) {
-                        Joueur joueurDef = territoireDefendant.getProprietaire();
-                        territoireDefendant.setProprietaire(territoireAttaquant.getProprietaire());
-                        territoireDefendant.setNbrRegiment(Integer.parseInt(nombreRegimentsPourAttaquer));
-                        territoireAttaquant.setNbrRegiment(territoireAttaquant.getNbrRegiment() - Integer.parseInt(nombreRegimentsPourAttaquer));
-                        donnerCarteJoueur();
-                        eliminerJoueur(joueurDef);
-                        this.mancheFinie = verifierFinPartie();
-                        if (mancheFinie) {
-                            mettreAJourClassement(this.joueursManche.get(0));
-                        }
-                    }
-
-                    System.out.println("numeroManche: " + numeroManche);
-                    System.out.println("numeroJoueur " + numeroJoueur);
-                    System.out.println("numeroJoueurCible " + numeroJoueurCible);
-                    System.out.println("typeAction " + typeAction);
-                    System.out.println("terrCible " + terrCible);
-                    System.out.println("terrSource :" + terrSource);
-                    System.out.println("regimentConcerne " + regimentConcerne);
-                    System.out.println("resultat " + resultat);
-                    System.out.println("regimentDef " + regimentDef);
-                    System.out.println("CDA " + combinedDesAttaque);
-                    System.out.println("CDD " + combinedDesDefense);
-
-                    GestionBD gestionBD = new GestionBD();
-                    gestionBD.insererActionJoueurAttaquer(numeroManche,numeroJoueur,typeAction,numeroJoueurCible,
-                            terrCible,terrSource,regimentConcerne,resultat,regimentDef,combinedDesAttaque,
-                            combinedDesDefense,nombreRegimentsAttaqueTues,nombreRegimentsDefenseTues);
-                    gestionBD.fermerConnexion();
-
                 }
+
+
 
                 /*Integer numeroManche = this.numeroManche; // Integer peut stocker comme null
                 Integer numeroJoueur = null;
