@@ -10,8 +10,7 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import riskGame.controller.ChercherMancheJoueur;
-import riskGame.controller.PlayerRegistrationForm;
+import riskGame.controller.*;
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
 import riskGame.model.Joueur;
@@ -19,7 +18,6 @@ import riskGame.model.Manche;
 import riskGame.model.TypeCouleur;
 //import riskGame.model.AbstractModel;
 import riskGame.vue.PlanispherePanel;
-import riskGame.controller.GestionBD;
 
 
 public class RiskGame {
