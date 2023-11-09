@@ -67,29 +67,89 @@ public class GestionBD {
 
     public ResultSet getResStaManche(int numeroManche){
         try {
+            // 1. recuperer raw data
             Statement stmt = connection.createStatement();
-            String query =
-                    "SELECT DISTINCT joueur.nomJoueur, joueur.prenomJoueur, joueur.dateNaissanceJoueur, "
-                            +"inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
-                            +"competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition "
-                            +"FROM joueur "
-                            +"LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur "
-                            +"LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche "
-                            +"LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi "
-                            +"LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition "
-                            +"WHERE manche.numeroManche = ?";
+            // get donnees = numeroManche = ?, numeroJoueur, nomjoueur, prenomJoueur, score ----------------------------
+            String rawData1 = "SELECT rawData1.numeroJoueur, rawData1.nomJoueur, rawData1.prenomJoueur, rawData1.score, rawData2.nbAtt, rawData2.nbDef, rawData3.pourcentageAttReussi\n" +
+                              "FROM (\n" +
+                              "    SELECT participer.numeroJoueur, joueur.nomJoueur, joueur.prenomJoueur, participer.score\n" +
+                              "    FROM participer, joueur\n" +
+                              "    WHERE participer.numeroJoueur = joueur.numeroJoueur\n" +
+                              "        AND participer.numeroManche = ?\n" +
+                              ") as rawData1\n" +
+                              "JOIN (\n" +
+                              "    SELECT t1.numeroJoueur, t1.nbAtt, t2.nbDef\n" +
+                              "    FROM (\n" +
+                              "        SELECT numeroJoueur, COUNT(numeroJoueur) as nbAtt\n" +
+                              "        FROM actionjoueur\n" +
+                              "        WHERE typeAction = 'Attaquer'\n" +
+                              "            AND numeroManche = ?\n" +
+                              "        GROUP BY numeroJoueur\n" +
+                              "    ) as t1,\n" +
+                              "    (\n" +
+                              "        SELECT numeroJoueurCible, COUNT(numeroJoueurCible) as nbDef\n" +
+                              "        FROM actionjoueur \n" +
+                              "        WHERE typeAction = 'Attaquer' \n" +
+                              "            AND numeroManche = ?\n" +
+                              "        GROUP BY numeroJoueurCible\n" +
+                              "    ) as t2 \n" +
+                              "    WHERE t1.numeroJoueur = t2.numeroJoueurCible\n" +
+                              "    ORDER BY t1.numeroJoueur\n" +
+                              ") as rawData2 ON rawData1.numeroJoueur = rawData2.numeroJoueur\n" +
+                              "JOIN (\n" +
+                              "    SELECT t1.numeroJoueur, t1.AttReussi / t2.nbAtt as pourcentageAttReussi\n" +
+                              "    FROM (\n" +
+                              "        SELECT numeroJoueur, COUNT(numeroJoueur) as AttReussi\n" +
+                              "        FROM actionjoueur\n" +
+                              "        WHERE numeroManche = ?\n" +
+                              "            AND typeAction = 'Attaquer'\n" +
+                              "            AND resultat = 'Reussi'\n" +
+                              "        GROUP BY numeroJoueur\n" +
+                              "    ) as t1, \n" +
+                              "    (\n" +
+                              "        SELECT numeroJoueur, COUNT(numeroJoueur) as nbAtt\n" +
+                              "        FROM actionjoueur\n" +
+                              "        WHERE numeroManche = ?\n" +
+                              "            AND typeAction = 'Attaquer'\n" +
+                              "        GROUP BY numeroJoueur\n" +
+                              "    ) as t2\n" +
+                              "    WHERE t1.numeroJoueur = t2.numeroJoueur\n" +
+                              "    ORDER BY t1.numeroJoueur\n" +
+                              ") as rawData3 ON rawData1.numeroJoueur = rawData3.numeroJoueur;";
 
-            System.out.println("chercher manches de "+ " "+ numeroManche  );
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, numeroManche);
+            PreparedStatement preparedStatement1 = connection.prepareStatement(rawData1);
+            preparedStatement1.setInt(1, numeroManche);
+            preparedStatement1.setInt(2, numeroManche);
+            preparedStatement1.setInt(3, numeroManche);
+            preparedStatement1.setInt(4, numeroManche);
+            preparedStatement1.setInt(5, numeroManche);
+            ResultSet Data = preparedStatement1.executeQuery();
 
-            ResultSet resultat = preparedStatement.executeQuery();
-            return resultat;
+
+//            while (Data.next()) {
+//                int numeroJoueur = Data.getInt("numeroJoueur");
+//                String nomJoueur = Data.getString("nomJoueur");
+//                String prenomJoueur = Data.getString("prenomJoueur");
+//                int score = Data.getInt("score");
+//                int nbAtt = Data.getInt("nbAtt");
+//                int nbDef = Data.getInt("nbDef");
+//                float pourcentageAttReussi = Data.getFloat("pourcentageAttReussi");
+//
+//                System.out.println("Numero Joueur: " + numeroJoueur + ", Nom Joueur: " + nomJoueur +
+//                                   ", Prenom Joueur: " + prenomJoueur + ", Score: " + score + ", nbAtt: " + nbAtt + ", nbDef: " + nbDef + ", pourcentageAttReussi: " + pourcentageAttReussi);
+//            }
+
+
+            return Data;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
     }
+
+
+
 
     public ResultSet getInfoJoueur() {
         try {
@@ -247,8 +307,6 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-	
-	
-	
+
 }	
 

@@ -40,22 +40,23 @@ public class ChercherMancheResSta {
         ChercherButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int numeroManche = Integer.parseInt(numeroMancheField.getText());
-
                 messageLabel.setText("");
 
                 // Base de donnees
-                GestionBD gestionBD = new GestionBD();
-                ResultSet resultat = gestionBD.getResStaManche(numeroManche);
+
+                    GestionBD gestionBD = new GestionBD();
+                    ResultSet Data = gestionBD.getResStaManche(numeroManche);
 
                 try {
-                    if (!resultat.isBeforeFirst()) {
+                    if (!Data.isBeforeFirst()) {
                         messageLabel.setText("Ce manche n'existe pas.");
                     } else {
-                        displayResultSet(resultat);
+                        displayResultSet(Data);
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+
                 gestionBD.fermerConnexion();
             }
         });
@@ -73,6 +74,7 @@ public class ChercherMancheResSta {
         panel.add(messageLabel);
 
         panel.add(buttonBox);
+
 
         frame.add(panel);
     }
