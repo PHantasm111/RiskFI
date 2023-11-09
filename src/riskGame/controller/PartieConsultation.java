@@ -225,7 +225,36 @@ public class PartieConsultation {
      * Récupère et affiche les informations sur les Manches à partir de la base de données.
      * Cette méthode crée un tableau pour afficher les données des Manches et fournit un bouton de retour
      */
-    static void afInfoManche(){
+    public static void afInfoManche() {
+        String[] optionsToChoose = { "Liste de tous les manches", "Trouver les résultats statistiques de manche"};
+
+        int choice = JOptionPane.showOptionDialog(null,
+                "Choisir une partie pour consulter.",
+                "Risk-Consultation-Joueur",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                optionsToChoose,
+                optionsToChoose[0]);
+
+        if (choice == JOptionPane.CLOSED_OPTION) {
+            System.out.println("Quitting app...");
+        } else {
+            String selectedOption = optionsToChoose[choice];
+            if (selectedOption.equals("Liste de tous les manches")) {
+                // afficher Liste de tous les manches
+                afListManche();
+
+            } else if (selectedOption.equals("Trouver les résultats statistiques de manche")) {
+                // les résultats statistiques de manche
+                ChercherMancheResSta ChercherMR = new ChercherMancheResSta();
+                ChercherMR.display();
+            }
+        }
+    }
+
+
+    public static void afListManche() {
         try {
             GestionBD gestionBD = new GestionBD();
             ResultSet resultat = gestionBD.getInfoManche();
@@ -278,4 +307,5 @@ public class PartieConsultation {
             e.printStackTrace();
         }
     }
+
 }
