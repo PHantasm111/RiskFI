@@ -72,8 +72,8 @@ public class ChercherMancheJoueur {
 
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                RiskGame riskgame = new RiskGame();
-                riskgame.consultationGUI();
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.consultationGUI();
             }
         });
 
