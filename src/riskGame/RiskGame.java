@@ -10,6 +10,8 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import riskGame.controller.ChercherMancheJoueur;
+import riskGame.controller.PlayerRegistrationForm;
 import riskGame.model.EtatJoueur;
 import riskGame.model.EtatManche;
 import riskGame.model.Joueur;
@@ -75,7 +77,7 @@ public class RiskGame {
 	 * - Si "Tournois" est choisi, des opérations de consultation relatives aux tournois seront exécutées.
 	 * - Si "Manche" est choisi, des opérations de consultation relatives aux tours de jeu seront exécutées.
 	 */
-	private static void consultationGUI() {
+	public static void consultationGUI() {
 		String[] optionsToChoose = { "Joueur", "Compétition", "Tournois", "Manche"};
 
 		int choice = JOptionPane.showOptionDialog(null,
@@ -112,14 +114,55 @@ public class RiskGame {
 
 
 	/**
-	 * Récupère et affiche les informations des joueurs à partir de la base de données.
-	 * Cette méthode crée un tableau pour afficher les données des joueurs et fournit un bouton de retour
+	 * Cette méthode affiche un menu permettant à l'utilisateur de choisir entre deux options :
+	 * - Afficher la liste de tous les joueurs
+	 * - Rechercher la manche d'un joueur
+	 *
+	 * L'utilisateur peut sélectionner une option à l'aide d'une boîte de dialogue.
+	 * Si l'option "Liste de tous les joueurs" est sélectionnée, la méthode appelle la méthode "afListJoueur()"
+	 * pour afficher la liste de tous les joueurs.
+	 * Si l'option "Trouver la manche du joueur" est sélectionnée, la méthode appelle la méthode "chercherMancheJoueur()"
+	 * pour rechercher les manches d'un joueur.
 	 */
 	private static void afInfoJoueur() {
+		String[] optionsToChoose = { "Liste de tous les joueurs", "Trouver la manche du joueur"};
+
+		int choice = JOptionPane.showOptionDialog(null,
+				"Choisir une partie pour consulter.",
+				"Risk-Consultation-Joueur",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				optionsToChoose,
+				optionsToChoose[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION) {
+			System.out.println("Quitting app...");
+		} else {
+			String selectedOption = optionsToChoose[choice];
+			if (selectedOption.equals("Liste de tous les joueurs")) {
+				// afficher Liste de tous les joueurs
+				afListJoueur();
+
+			} else if (selectedOption.equals("Trouver la manche du joueur")) {
+				// afficher tous les manche du joueur
+				ChercherMancheJoueur cherchermanchejoueur = new ChercherMancheJoueur();
+				cherchermanchejoueur.display();
+			}
+		}
+	}
+
+
+	/**
+	 * Cette méthode affiche une liste de tous les joueurs sous forme de tableau.
+	 * Elle récupère les informations des joueurs à partir de la base de données, les stocke dans un modèle de tableau,
+	 * puis affiche ces données dans une fenêtre de dialogue.
+	 * L'utilisateur peut également retourner au menu de consultation en cliquant sur un bouton.
+	 */
+	public static void afListJoueur(){
 		try {
 			GestionBD gestionBD = new GestionBD();
 			ResultSet resultat = gestionBD.getInfoJoueur();
-
 
 			// get noms de colonnes
 			ResultSetMetaData metaData = resultat.getMetaData();
@@ -155,7 +198,6 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-
 					consultationGUI();
 				}
 			});
@@ -169,6 +211,7 @@ public class RiskGame {
 			e.printStackTrace();
 		}
 	}
+
 
 	/**
 	 * Récupère et affiche les informations sur les compétitions à partir de la base de données.
@@ -326,7 +369,6 @@ public class RiskGame {
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					consultationGUI();
 				}
 			});
@@ -434,9 +476,7 @@ public class RiskGame {
 				GestionBD gestionBD = new GestionBD();
 				gestionBD.insererCompetition(nomCompetition, dateCompetition, dateDebut, dateFin);
 				gestionBD.fermerConnexion();
-				
-				
-				
+
 				frame.dispose();
 	        	}
 	    });

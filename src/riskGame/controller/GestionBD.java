@@ -91,7 +91,32 @@ public class GestionBD {
         }
     }
 
+    public ResultSet getInfoMancheJoueur(String nom,String prenom){
+        try {
+            Statement stmt = connection.createStatement();
+            String query =
+                    "SELECT DISTINCT joueur.nomJoueur, joueur.prenomJoueur, joueur.dateNaissanceJoueur, "
+                            +"inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
+                            +"competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition "
+                            +"FROM joueur "
+                            +"LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur "
+                            +"LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche "
+                            +"LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi "
+                            +"LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition "
+                            +"WHERE joueur.nomJoueur = ? AND joueur.prenomJoueur = ?";
 
+            System.out.println("chercher manches de "+ " "+ nom + " "+ prenom );
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nom);
+            preparedStatement.setString(2, prenom);
+
+            ResultSet resultat = preparedStatement.executeQuery();
+            return resultat;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void creationJoueur(String nom,String prenom,String birthday,String equipe){
         try {
@@ -183,7 +208,6 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-
 
 
     public void insererCompetition(String nomCompetition, String anneeCompetition, String dateDebut, String dateFin) {
