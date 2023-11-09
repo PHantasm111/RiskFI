@@ -156,14 +156,12 @@ public class GestionBD {
             String query =
                     "SELECT DISTINCT joueur.numeroJoueur as NumJ, joueur.nomJoueur as NomJ, "
                             +" joueur.prenomJoueur as PrenomJ, joueur.dateNaissanceJoueur, joueur.numeroEquipe, "
-                            +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition, "
-                            +" competition.nomCompetition, competition.anneeCompetition, competition.etatCompetition"
+                            +" equipe.nomEquipe, inscrire.numeroManche, tournoi.numeroTournoi, tournoi.numeroCompetition"
                             +" FROM joueur"
                             +" LEFT JOIN equipe ON joueur.numeroEquipe = equipe.numeroEquipe"
                             +" LEFT JOIN inscrire ON joueur.numeroJoueur = inscrire.numeroJoueur"
                             +" LEFT JOIN manche ON inscrire.numeroManche = manche.numeroManche"
                             +" LEFT JOIN tournoi ON manche.numeroTournoi = tournoi.numeroTournoi"
-                            +" LEFT JOIN competition ON tournoi.numeroCompetition = competition.numeroCompetition"
                             +" ORDER BY `joueur`.`numeroJoueur` ASC";
             ResultSet resultat = stmt.executeQuery(query);
             return resultat;
