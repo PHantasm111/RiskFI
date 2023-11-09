@@ -1,6 +1,7 @@
 package riskGame.controller;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 //import riskGame.model.AbstractModel;
 
@@ -134,6 +135,74 @@ public class GestionBD {
             String query3 = "INSERT INTO joueur (etatJoueur, nomJoueur, prenomJoueur, dateNaissanceJoueur, numeroEquipe) VALUES " +
                     "('VALIDE', '" + nom + "', '" + prenom + "', STR_TO_DATE('" + birthday + "', '%d/%m/%Y')" + "," + numeroEquipe +")";
             stmt.executeUpdate(query3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void creationTournoi(int numeroOrdre, String dateDebut, String dateFin, int numeroCompetition){
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "INSERT INTO tournoi (etatTournoi, numeroOrdre, dateDebutTournoi, dateFinTournoi, numeroCompetition) VALUES("
+                    + "'Cree','" + numeroOrdre + "',STR_TO_DATE('" + dateDebut + "', '%d/%m/%Y')" + ",STR_TO_DATE('" + dateDebut + "', '%d/%m/%Y')" + ",'" + numeroCompetition + "')";
+            stmt.executeUpdate(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Integer> chercherNumCompetition() {
+        ArrayList<Integer> numerosCompetition = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            String query = "SELECT c.numeroCompetition FROM competition c";
+            ResultSet resultat = stmt.executeQuery(query);
+
+            while (resultat.next()) {
+                int numero = resultat.getInt("numeroCompetition");
+                numerosCompetition.add(numero);
+            }
+
+            return numerosCompetition;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; // 如果发生异常，返回null或者你认为合适的默认值
+    }
+
+    public ArrayList<Integer> chercherNumTournoi() {
+        ArrayList<Integer> numerosTournoi = new ArrayList<>();
+
+        try {
+            Statement stmt = connection.createStatement();
+
+            String query = "SELECT t.numeroTournoi FROM tournoi t";
+            ResultSet resultat = stmt.executeQuery(query);
+
+            while (resultat.next()) {
+                int numero = resultat.getInt("numeroTournoi");
+                numerosTournoi.add(numero);
+            }
+
+            return numerosTournoi;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; // 如果发生异常，返回null或者你认为合适的默认值
+    }
+
+    public void creationManche(int numeroTournoi){
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "INSERT INTO manche (etatManche, numeroTournoi) VALUES("
+                    + "'Cree','" + numeroTournoi + "')";
+            stmt.executeUpdate(query);
 
         } catch (Exception e) {
             e.printStackTrace();
