@@ -84,7 +84,11 @@ public class MainMenu {
     }
 
 
-
+    /**
+     * Affiche une interface graphique permettant à l'utilisateur de choisir parmi différentes options de création,
+     * telles que la création de joueur, de compétition, de tournoi, de manche, ou d'affecter des joueurs à des manches.
+     * Cette méthode utilise la bibliothèque JOptionPane pour afficher une boîte de dialogue avec des options.
+     */
     public static void creationGUI(){
         String[] optionsToChoose = { "Création de Joueur", "Création de compétition", "Création de tournoi", "Création de manche", "Affecter joueurs/manches"};
 

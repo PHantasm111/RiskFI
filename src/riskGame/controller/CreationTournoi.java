@@ -20,10 +20,6 @@ public class CreationTournoi {
     private JTextField dateFinField; //Creation de field
     private JTextField numeroCompetitionField; //Creation de field
 
-    /**
-     * Constructeur de la classe CreationTournoi.
-     * Initialise et configure l'interface graphique de création d'un tournoi.
-     */
     public CreationTournoi() {
         frame = new JFrame("Creation de tournoi"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
@@ -53,10 +49,6 @@ public class CreationTournoi {
         }
 
 
-
-
-
-
         JButton enregistrerButton = new JButton("Enregistrer"); //creation de button
         enregistrerButton.addActionListener(new ActionListener() { //set la fonction en cliquant le bouton
 
@@ -74,7 +66,7 @@ public class CreationTournoi {
                 gestionBD.creationTournoi(numeroOrdreInt, dateDebut, dateFin, numeroCompetition);
                 gestionBD.fermerConnexion();
 
-                // 简单示例：显示注册信息
+                // Afficher les info de inscriptions
                 JOptionPane.showMessageDialog(frame, "Créé avec succès!\nNumero d'ordre: " + numeroOrdre + "\nDate de debut: " + dateDebut + "\nDate de fin: " + dateFin + "\nNumero de la competition: " + numeroCompetition);
             }
         });
@@ -83,7 +75,7 @@ public class CreationTournoi {
         runCreationGUIButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainMenu.creationGUI(); // 运行 creationGUI() 方法
+                MainMenu.creationGUI(); // run creationGUI()
             }
         });
 
@@ -101,7 +93,7 @@ public class CreationTournoi {
         //panel.add(new JLabel()); // ajouter un label vide
         panel.add(enregistrerButton); //ajouter le bouton enregistrer
 
-        frame.add(panel); //ajouter le panel dans le frame panel:对话框 frame：框架
+        frame.add(panel); //ajouter le panel dans le frame
     }
 
     public void display() {

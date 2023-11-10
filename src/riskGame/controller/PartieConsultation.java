@@ -253,7 +253,12 @@ public class PartieConsultation {
         }
     }
 
-
+    /**
+     * Affiche une fenêtre graphique contenant une table avec les informations sur les manches.
+     * Les données sont extraites de la base de données et affichées dans une JTable.
+     * L'utilisateur peut également revenir au menu de consultation en cliquant sur le bouton dédié.
+     * Cette méthode utilise la bibliothèque JOptionPane pour afficher la fenêtre graphique.
+     */
     public static void afListManche() {
         try {
             GestionBD gestionBD = new GestionBD();

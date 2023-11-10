@@ -18,6 +18,12 @@ public class PlayerRegistrationForm {
 
     private JTextField equipeField; //Creation de field
 
+    /**
+     * Fenêtre de création de joueur.
+     * Permet à l'utilisateur de saisir les informations d'un joueur telles que le nom, le prénom, la date de naissance,
+     * et le nom de l'équipe. Les informations saisies sont enregistrées dans la base de données lorsqu'on appuie sur le bouton "Enregistrer".
+     * Cette classe utilise une fenêtre JFrame et des composants Swing pour l'interface graphique.
+     */
     public PlayerRegistrationForm() {
         frame = new JFrame("Creation de joueur"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
