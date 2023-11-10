@@ -15,6 +15,11 @@ public class ChercherMancheResSta {
     private JFrame frame; //Creation de frame
     private JTextField numeroMancheField; //Creation de field
 
+    /**
+     * Constructeur de la classe ChercherMancheResSta.
+     * Initialise et configure les composants de l'interface graphique.
+     */
+
     public ChercherMancheResSta() {
         frame = new JFrame("Chercher les résultats statistiques de manche");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

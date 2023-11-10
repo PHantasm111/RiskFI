@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 public class GestionBD {
 	private Connection connection;
-	
+
+    /**
+     * Constructeur de la classe GestionBD.
+     * Initialise la connexion à la base de données.
+     */
 	public GestionBD() {
         // Initialisation de la connexion à la base de données
         try {
@@ -19,7 +23,12 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-	
+
+    /**
+     * Récupère les informations sur les compétitions depuis la base de données.
+     *
+     * @return Un objet ResultSet contenant les informations sur les compétitions.
+     */
 	public ResultSet getInfoCompetition() {
 		try {
 			Statement stmt = connection.createStatement();
@@ -33,7 +42,12 @@ public class GestionBD {
 		}
 		
 	}
-	
+
+    /**
+     * Récupère les informations sur les tournois depuis la base de données.
+     *
+     * @return Un objet ResultSet contenant les informations sur les tournois.
+     */
 	public ResultSet getInfoTournoi() {
 		try {
 			Statement stmt = connection.createStatement();
@@ -49,6 +63,12 @@ public class GestionBD {
 		}
 		
 	}
+
+    /**
+     * Récupère les informations sur les manches depuis la base de données.
+     *
+     * @return Un objet ResultSet contenant les informations sur les manches.
+     */
 	public ResultSet getInfoManche() {
 		try {
 			Statement stmt = connection.createStatement();
@@ -66,6 +86,12 @@ public class GestionBD {
 		
 	}
 
+    /**
+     * Récupère les statistiques de la manche spécifiée depuis la base de données.
+     *
+     * @param numeroManche Le numéro de la manche.
+     * @return Un objet ResultSet contenant les statistiques de la manche.
+     */
     public ResultSet getResStaManche(int numeroManche){
         try {
             // 1. recuperer raw data
@@ -149,7 +175,11 @@ public class GestionBD {
 
     }
 
-
+    /**
+     * Récupère les informations sur les joueurs depuis la base de données.
+     *
+     * @return Un objet ResultSet contenant les informations sur les joueurs.
+     */
     public ResultSet getInfoJoueur() {
         try {
             Statement stmt = connection.createStatement();
@@ -171,6 +201,14 @@ public class GestionBD {
         }
     }
 
+    /**
+     * Récupère les informations sur la participation d'un joueur à divers tours de la compétition.
+     *
+     * @param nom    Le nom de famille du joueur.
+     * @param prenom Le prénom du joueur.
+     * @return Un ResultSet contenant des informations distinctes sur le joueur, les détails du tournoi et les détails de la compétition.
+     *         Renvoie null en cas d'exception.
+     */
     public ResultSet getInfoMancheJoueur(String nom,String prenom){
         try {
             Statement stmt = connection.createStatement();
@@ -198,6 +236,14 @@ public class GestionBD {
         }
     }
 
+    /**
+     * Crée une nouvelle entrée joueur dans la base de données avec les informations spécifiées.
+     *
+     * @param nom      Le nom de famille du joueur.
+     * @param prenom   Le prénom du joueur.
+     * @param birthday La date de naissance du joueur au format 'dd/MM/yyyy'.
+     * @param equipe   Le nom de l'équipe à laquelle le joueur appartient.
+     */
     public void creationJoueur(String nom,String prenom,String birthday,String equipe){
         try {
             Statement stmt = connection.createStatement();
@@ -221,6 +267,15 @@ public class GestionBD {
         }
     }
 
+
+    /**
+     * Crée une nouvelle entrée de tournoi dans la base de données avec les informations spécifiées.
+     *
+     * @param numeroOrdre         Le numéro d'ordre du tournoi.
+     * @param dateDebut           La date de début du tournoi au format 'dd/MM/yyyy'.
+     * @param dateFin             La date de fin du tournoi au format 'dd/MM/yyyy'.
+     * @param numeroCompetition   Le numéro de la compétition associée au tournoi.
+     */
     public void creationTournoi(int numeroOrdre, String dateDebut, String dateFin, int numeroCompetition){
         try {
             Statement stmt = connection.createStatement();
@@ -233,6 +288,11 @@ public class GestionBD {
         }
     }
 
+    /**
+     * Récupère une liste de numéros de compétition depuis la base de données.
+     *
+     * @return Une ArrayList de valeurs entières représentant les numéros de compétition.
+     */
     public ArrayList<Integer> chercherNumCompetition() {
         ArrayList<Integer> numerosCompetition = new ArrayList<>();
 
@@ -252,9 +312,14 @@ public class GestionBD {
             e.printStackTrace();
         }
 
-        return null; // 如果发生异常，返回null或者你认为合适的默认值
+        return null;
     }
 
+    /**
+     * Récupère une liste de numéros de compétition depuis la base de données.
+     *
+     * @return Une ArrayList de valeurs entières représentant les numéros de compétition.
+     */
     public ArrayList<Integer> chercherNumTournoi() {
         ArrayList<Integer> numerosTournoi = new ArrayList<>();
 
@@ -274,8 +339,15 @@ public class GestionBD {
             e.printStackTrace();
         }
 
-        return null; // 如果发生异常，返回null或者你认为合适的默认值
+        return null;
     }
+
+
+    /**
+     * Crée une nouvelle manche dans la base de données pour un tournoi donné.
+     *
+     * @param numeroTournoi Le numéro du tournoi pour lequel la manche est créée.
+     */
 
     public void creationManche(int numeroTournoi){
         try {
@@ -289,7 +361,14 @@ public class GestionBD {
         }
     }
 
-
+    /**
+     * Insère une nouvelle compétition dans la base de données avec les détails fournis.
+     *
+     * @param nomCompetition   Le nom de la compétition.
+     * @param anneeCompetition L'année de la compétition.
+     * @param dateDebut        La date de début de la compétition au format "dd/MM/yyyy".
+     * @param dateFin          La date de fin de la compétition au format "dd/MM/yyyy".
+     */
     public void insererCompetition(String nomCompetition, String anneeCompetition, String dateDebut, String dateFin) {
         try {
             Statement stmt = connection.createStatement();
@@ -304,7 +383,13 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Récupère un ResultSet contenant des informations sur les rounds (manches) avec moins de 5 joueurs inscrits.
+     *
+     * @return Un ResultSet avec les colonnes : "numeroManche", "etatManche" et "nombreJoueursInscrits".
+     * @throws SQLException Si une erreur d'accès à la base de données se produit ou si cette méthode est appelée sur une connexion fermée.
+     */
     public ResultSet getListeSelectManche() {
     	try {
     		Statement stmt;
@@ -321,7 +406,14 @@ public class GestionBD {
     		return null;
     	}
     }
-    
+
+    /**
+     * Récupère un ResultSet contenant des informations sur les joueurs qui ne se sont pas inscrits pour un tour (manche) spécifique.
+     *
+     * @param manchenum L'identifiant du tour (manche) pour vérifier les joueurs non inscrits.
+     * @return Un ResultSet avec les colonnes : "nomJoueur", "prenomJoueur", "etatJoueur" et "numeroJoueur" pour les joueurs non inscrits.
+     * @throws SQLException Si une erreur d'accès à la base de données se produit ou si cette méthode est appelée sur une connexion fermée.
+     */
     public ResultSet getListeSelectJoueur(String manchenum) {
     	try {
     		Statement stmt;
@@ -338,7 +430,15 @@ public class GestionBD {
     		return null;
     	}
     }
-    
+
+
+    /**
+     * Insère un joueur dans la table "inscrire" pour un tour (manche) spécifique.
+     *
+     * @param playerID   L'identifiant du joueur à insérer.
+     * @param mancheNum  L'identifiant du tour (manche) dans lequel le joueur est inscrit.
+     * @throws SQLException Si une erreur d'accès à la base de données se produit ou si cette méthode est appelée sur une connexion fermée.
+     */
     public void insertPlayerIntoInscrire(int playerID, String mancheNum) {
     	try {
 	        Statement stmt = connection.createStatement();
@@ -348,7 +448,14 @@ public class GestionBD {
 	        e.printStackTrace();
 	    }
     }
-    
+
+    /**
+     * Récupère le nombre de joueurs inscrits dans un tour (manche) spécifique.
+     *
+     * @param manchenum L'identifiant du tour (manche) pour lequel récupérer le nombre de joueurs inscrits.
+     * @return Un ResultSet contenant le numéro du tour et le nombre de joueurs inscrits.
+     * @throws SQLException Si une erreur d'accès à la base de données se produit ou si cette méthode est appelée sur une connexion fermée.
+     */
     public ResultSet getNbInscritInManche(String manchenum) {
     	try {
     		Statement stmt;
@@ -366,6 +473,23 @@ public class GestionBD {
 	    }
     }
 
+    /**
+     * Insère l'action d'attaque d'un joueur dans la base de données.
+     *
+     * @param numeroManche                Le numéro du tour où l'action s'est produite.
+     * @param numeroJoueur                L'identifiant du joueur effectuant l'action.
+     * @param typeAction                  Le type d'action (par exemple, "Attaquer").
+     * @param numeroJoueurCible           L'identifiant du joueur ciblé.
+     * @param terrCible                   Le territoire ciblé.
+     * @param terrSource                  Le territoire source d'où l'attaque est initiée.
+     * @param regimentConcerne            Le régiment impliqué dans l'action.
+     * @param resultat                    Le résultat de l'action.
+     * @param regimentDef                 Le régiment défenseur.
+     * @param CombinedDesAttaque          La somme des dés pour le joueur attaquant.
+     * @param CombinedDesDefense          La somme des dés pour le joueur défenseur.
+     * @param nombreRegimentsAttaqueTues  Le nombre de régiments attaquants tués.
+     * @param nombreRegimentsDefenseTues  Le nombre de régiments défenseurs tués.
+     */
     public void insererActionJoueurAttaquer(Integer numeroManche, Integer numeroJoueur, String typeAction, Integer numeroJoueurCible,
                                 String terrCible, String terrSource, Integer regimentConcerne, String resultat, Integer regimentDef,
                                             Integer CombinedDesAttaque, Integer CombinedDesDefense, int nombreRegimentsAttaqueTues, int nombreRegimentsDefenseTues ){
@@ -388,7 +512,16 @@ public class GestionBD {
             e.printStackTrace();
         }
     }
-	
+
+    /**
+     * Enregistre l'action de déplacement d'un joueur dans la base de données.
+     *
+     * @param numeroJoueur                L'identifiant du joueur effectuant le déplacement.
+     * @param territoireDepartString      Le territoire d'où provient le déplacement.
+     * @param territoireArriveeChoisi     Le territoire de destination choisi.
+     * @param nombreDeRegimentsADeplacer  Le nombre de régiments à déplacer.
+     * @param numeroManche                Le numéro du tour où le déplacement s'est produit.
+     */
     public void historiseDeplacement(int numeroJoueur, String territoireDepartString, String territoireArriveeChoisi,
 			String nombreDeRegimentsADeplacer, int numeroManche) {
 		try {
@@ -407,6 +540,13 @@ public class GestionBD {
 		
 	}
 
+    /**
+     * Enregistre l'action de renforcement d'un joueur dans la base de données.
+     *
+     * @param numeroManche    Le numéro du tour où le renforcement s'est produit.
+     * @param numeroJoueur    L'identifiant du joueur effectuant le renforcement.
+     * @param territoireCible Le territoire recevant le renforcement.
+     */
     public void insererActionJoueurRenforcer(int numeroManche, int numeroJoueur, String territoireCible) {
         try {
             Statement stmt = connection.createStatement();
@@ -424,6 +564,9 @@ public class GestionBD {
 
     }
 
+    /**
+     * Fermer la connexion.
+     */
 	public void fermerConnexion() {
         try {
             if (connection != null) {

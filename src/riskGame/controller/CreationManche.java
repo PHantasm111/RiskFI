@@ -12,7 +12,9 @@ public class CreationManche {
     private JFrame frame; //Creation de frame
     private JTextField numeroTournoiField; //Creation de field
 
-
+    /**
+     * Cette classe représente une interface graphique pour la création d'une manche.
+     */
     public CreationManche() {
         frame = new JFrame("Creation de manche"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
