@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+
+/**
+ * La classe ChercherMancheResSta permet de créer une interface graphique pour la recherche de résultats statistiques d'une manche.
+ */
 public class ChercherMancheResSta {
     private JFrame frame; //Creation de frame
     private JTextField numeroMancheField; //Creation de field

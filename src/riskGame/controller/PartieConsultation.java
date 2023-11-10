@@ -230,7 +230,7 @@ public class PartieConsultation {
 
         int choice = JOptionPane.showOptionDialog(null,
                 "Choisir une partie pour consulter.",
-                "Risk-Consultation-Joueur",
+                "Risk-Consultation-Manche",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,

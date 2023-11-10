@@ -11,7 +11,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-
+/**
+ * La classe ChercherMancheJoueur permet de créer une interface graphique pour la recherche de joueur.
+ */
 public class ChercherMancheJoueur {
     private JFrame frame; //Creation de frame
     private JTextField nomField; //Creation de field

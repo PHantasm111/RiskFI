@@ -8,6 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
+/**
+ * La classe CreationTournoi permet de créer une interface graphique pour la création d'un nouveau tournoi.
+ */
 public class CreationTournoi {
 
     private JFrame frame; //Creation de frame
@@ -16,10 +20,6 @@ public class CreationTournoi {
     private JTextField dateFinField; //Creation de field
     private JTextField numeroCompetitionField; //Creation de field
 
-    /**
-     * Constructeur de la classe CreationTournoi.
-     * Initialise et configure les composants de l'interface graphique.
-     */
     public CreationTournoi() {
         frame = new JFrame("Creation de tournoi"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
