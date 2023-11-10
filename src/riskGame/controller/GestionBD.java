@@ -6,6 +6,7 @@ import java.util.ArrayList;
 //import riskGame.model.AbstractModel;
 
 
+
 public class GestionBD {
 	private Connection connection;
 	

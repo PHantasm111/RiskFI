@@ -8,11 +8,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * La classe CreationManche permet de créer une interface graphique pour la création d'une nouvelle manche.
+ */
 public class CreationManche {
     private JFrame frame; //Creation de frame
     private JTextField numeroTournoiField; //Creation de field
 
 
+    /**
+     * Constructeur de la classe CreationManche.
+     * Initialise et configure l'interface graphique de création de manche.
+     */
     public CreationManche() {
         frame = new JFrame("Creation de manche"); //Set titre de frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arreter le frame
